@@ -2,27 +2,27 @@
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema">
     <pd:name>Tests/Hello.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>89</pd:startX>
-    <pd:startY>186</pd:startY>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>417</pd:endX>
-    <pd:endY>185</pd:endY>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1685457078758</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1637858427424</pd:targetNamespace>
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>248</pd:x>
-        <pd:y>183</pd:y>
+        <pd:x>308</pd:x>
+        <pd:y>65</pd:y>
         <config>
             <role>User</role>
         </config>
         <pd:inputBindings>
             <ns:ActivityInput>
                 <message>
-                    <xsl:value-of select="'Hello world with TIBCO'"/>
+                    <xsl:value-of select="'Hello world. Welcome to the course about TIBCO BW 5'"/>
                 </message>
             </ns:ActivityInput>
         </pd:inputBindings>
