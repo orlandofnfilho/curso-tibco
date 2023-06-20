@@ -1,0 +1,45 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
+	<globalVariables>
+		<globalVariable>
+			<name>DB_HOST</name>
+			<value>localhost</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1687249811560</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DB_NAME</name>
+			<value>regescweb_db</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1687244853653</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DB_PASSWORD</name>
+			<value>no value</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1687244853649</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DB_PORT</name>
+			<value>3306</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1687244853656</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>DB_USER</name>
+			<value>root</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1687244853659</modTime>
+		</globalVariable>
+	</globalVariables>
+</repository>
