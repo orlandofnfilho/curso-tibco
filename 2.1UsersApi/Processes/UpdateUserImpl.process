@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UpdateUser.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UpdateUser.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/UserSchema.xsd"/>
-    <pd:name>Processes/AddUserImpl.process</pd:name>
+    <pd:name>Processes/UpdateUserImpl.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
         <xsd:element name="PostData" type="xsd:string"/>
     </pd:startType>
-    <pd:startX>45</pd:startX>
-    <pd:startY>107</pd:startY>
+    <pd:startX>75</pd:startX>
+    <pd:startY>85</pd:startY>
     <pd:returnBindings>
         <ResponseData>
             <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
@@ -17,16 +18,99 @@
     <pd:endType>
         <xsd:element name="ResponseData" type="xsd:string"/>
     </pd:endType>
-    <pd:endX>588</pd:endX>
-    <pd:endY>106</pd:endY>
+    <pd:endX>701</pd:endX>
+    <pd:endY>86</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1687245710155</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1687262857259</pd:targetNamespace>
+    <pd:activity name="JDBC Update">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>382</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>UPDATE users 
+SET name =?, status=?
+WHERE id=?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>id</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>name</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>status</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <id>
+                    <xsl:choose>
+                        <xsl:when test="exists($Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:id)">
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:id"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </id>
+                <name>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:name"/>
+                </name>
+                <status>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:status"/>
+                </status>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>521</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <ValidateIntputEnable>true</ValidateIntputEnable>
+            <ActivityInputEditor>
+                <xsd:element name="Response">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="statusCode" type="xsd:string"/>
+                            <xsd:element name="message" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <Response>
+                    <statusCode>
+                        <xsl:value-of select="&quot;200&quot;"/>
+                    </statusCode>
+                    <message>
+                        <xsl:value-of select="&quot;User has been updated&quot;"/>
+                    </message>
+                </Response>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:activity name="Parse JSON">
         <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
         <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
-        <pd:x>179</pd:x>
-        <pd:y>107</pd:y>
+        <pd:x>223</pd:x>
+        <pd:y>88</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -41,89 +125,8 @@
             </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="SaveUserData">
-        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>318</pd:x>
-        <pd:y>110</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
-            <statement>INSERT INTO users (name, status) VALUES (?,?) </statement>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>name</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>status</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-        </config>
-        <pd:inputBindings>
-            <jdbcUpdateActivityInput>
-                <name>
-                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:name"/>
-                </name>
-                <status>
-                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:status"/>
-                </status>
-            </jdbcUpdateActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Render JSON">
-        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
-        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>454</pd:x>
-        <pd:y>109</pd:y>
-        <config>
-            <SchemaType>xsdType</SchemaType>
-            <BadgerfishCheck>false</BadgerfishCheck>
-            <NullforEmptyvalues>true</NullforEmptyvalues>
-            <ValidateIntputEnable>true</ValidateIntputEnable>
-            <ActivityInputEditor>
-                <xsd:element name="Response">
-                    <xsd:complexType>
-                        <xsd:sequence>
-                            <xsd:element name="statusCode" type="xsd:int"/>
-                            <xsd:element name="message" type="xsd:string"/>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
-            </ActivityInputEditor>
-        </config>
-        <pd:inputBindings>
-            <ns:ActivityInputClass>
-                <Response>
-                    <statusCode>
-                        <xsl:value-of select="200"/>
-                    </statusCode>
-                    <message>
-                        <xsl:value-of select="&quot;Data saved sucessfully&quot;"/>
-                    </message>
-                </Response>
-            </ns:ActivityInputClass>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>Parse JSON</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Parse JSON</pd:from>
-        <pd:to>SaveUserData</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>SaveUserData</pd:from>
+        <pd:from>JDBC Update</pd:from>
         <pd:to>Render JSON</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -137,8 +140,15 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>JDBC Update</pd:from>
-        <pd:to>SaveUserData</pd:to>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>JDBC Update</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

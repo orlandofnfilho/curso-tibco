@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:UsersSchemas="http://www.tibco.com/schemas/WebService/SharedResources/Schemas/UsersSchemas.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/WebService/SharedResources/Schemas/UsersSchemas.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Users">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UsersSchemas:User" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="User">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="UsersSchemas:id" minOccurs="0"/>
+				<xs:element ref="UsersSchemas:name" minOccurs="0"/>
+				<xs:element ref="UsersSchemas:status" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="id" type="xs:int"/>
+	<xs:element name="name" type="xs:string"/>
+	<xs:element name="status" type="xs:string"/>
+</xs:schema>

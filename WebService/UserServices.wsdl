@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Created by TIBCO WSDL-->
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://xmlns.example.com/1687351472460" xmlns:ns0="http://www.tibco.com/schemas/WebService/SharedResources/Schemas/UsersSchemas.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="Untitled" targetNamespace="http://xmlns.example.com/1687351472460">
+    <wsdl:types>
+        <xs:schema xmlns:UsersSchemas="http://www.tibco.com/schemas/WebService/SharedResources/Schemas/UsersSchemas.xsd" targetNamespace="http://www.tibco.com/schemas/WebService/SharedResources/Schemas/UsersSchemas.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified">
+            <xs:element name="User">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="UsersSchemas:id" minOccurs="0"/>
+                        <xs:element ref="UsersSchemas:name" minOccurs="0"/>
+                        <xs:element ref="UsersSchemas:status" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Users">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element ref="UsersSchemas:User" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="id" type="xs:int"/>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="status" type="xs:string"/>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:service name="UserService">
+        <wsdl:port name="UsersPortTypeEndpoint1" binding="tns:UsersPortTypeEndpoint1Binding">
+            <soap:address location="http://localhost:8080/UserService.serviceagent/UsersPortTypeEndpoint1"/>
+        </wsdl:port>
+    </wsdl:service>
+    <wsdl:portType name="UsersPortType">
+        <wsdl:operation name="DeleteUser">
+            <wsdl:input message="tns:ReqDeleteUser"/>
+            <wsdl:output message="tns:RespDeleteUser"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateUser">
+            <wsdl:input message="tns:ReqAddUser"/>
+            <wsdl:output message="tns:RespAddUser"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetUsers">
+            <wsdl:input message="tns:ReqGetUsers"/>
+            <wsdl:output message="tns:RespGetUsers"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddUser">
+            <wsdl:input message="tns:ReqAddUser"/>
+            <wsdl:output message="tns:RespAddUser"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetUser">
+            <wsdl:input message="tns:ReqGetUser"/>
+            <wsdl:output message="tns:RespGetUser"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="UsersPortTypeEndpoint1Binding" type="tns:UsersPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="DeleteUser">
+            <soap:operation style="document" soapAction="/UserService.serviceagent/UsersPortTypeEndpoint1/DeleteUser"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="Request"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="Message"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateUser">
+            <soap:operation style="document" soapAction="/UserService.serviceagent/UsersPortTypeEndpoint1/UpdateUser"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="Request"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="Message"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetUsers">
+            <soap:operation style="document" soapAction="/UserService.serviceagent/UsersPortTypeEndpoint1/GetUsers"/>
+            <wsdl:input>
+                <soap:body use="literal" parts=""/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="Response"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddUser">
+            <soap:operation style="document" soapAction="/UserService.serviceagent/UsersPortTypeEndpoint1/AddUser"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="Request"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="Message"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetUser">
+            <soap:operation style="document" soapAction="/UserService.serviceagent/UsersPortTypeEndpoint1/GetUser"/>
+            <wsdl:input>
+                <soap:body use="literal" parts="Request"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="Response"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:message name="ReqDeleteUser">
+        <wsdl:part name="Request" element="ns0:id"/>
+    </wsdl:message>
+    <wsdl:message name="RespDeleteUser">
+        <wsdl:part name="Message" type="xs:string"/>
+    </wsdl:message>
+    <wsdl:message name="ReqAddUser">
+        <wsdl:part name="Request" element="ns0:User"/>
+    </wsdl:message>
+    <wsdl:message name="RespAddUser">
+        <wsdl:part name="Message" type="xs:string"/>
+    </wsdl:message>
+    <wsdl:message name="ReqGetUsers"/>
+    <wsdl:message name="RespGetUsers">
+        <wsdl:part name="Response" element="ns0:Users"/>
+    </wsdl:message>
+    <wsdl:message name="ReqGetUser">
+        <wsdl:part name="Request" element="ns0:id"/>
+    </wsdl:message>
+    <wsdl:message name="RespGetUser">
+        <wsdl:part name="Response" element="ns0:User"/>
+    </wsdl:message>
+</wsdl:definitions>

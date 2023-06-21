@@ -1,41 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/UserSchema.xsd"/>
-    <pd:name>Processes/GetUserImpl.process</pd:name>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://xmlns.example.com/1687344424922" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/schemas/WebService/SharedResources/Schemas/UsersSchemas.xsd">
+    <wsdl:import namespace="http://xmlns.example.com/1687344424922" location="/SharedResources/WSDL/UsersWDL.wsdl"/>
+    <pd:name>Processes/GetUser.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startType>
-        <xsd:element name="id" type="xsd:int"/>
-    </pd:startType>
-    <pd:startX>87</pd:startX>
-    <pd:startY>83</pd:startY>
+    <pd:startType wsMsgRef="pfx:ReqGetUser"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>63</pd:startY>
     <pd:returnBindings>
-        <ResponseData>
-            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
-        </ResponseData>
+        <pfx:RespGetUser>
+            <Response>
+                <ns:User>
+                    <xsl:if test="$JDBC-Query/resultSet/Record[1]/id">
+                        <ns:id>
+                            <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/id"/>
+                        </ns:id>
+                    </xsl:if>
+                    <xsl:if test="$JDBC-Query/resultSet/Record[1]/name">
+                        <ns:name>
+                            <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/name"/>
+                        </ns:name>
+                    </xsl:if>
+                    <xsl:if test="$JDBC-Query/resultSet/Record[1]/status">
+                        <ns:status>
+                            <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/status"/>
+                        </ns:status>
+                    </xsl:if>
+                </ns:User>
+            </Response>
+        </pfx:RespGetUser>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
-    <pd:endType>
-        <xsd:element name="ResponseData" type="xsd:string"/>
-    </pd:endType>
-    <pd:endX>462</pd:endX>
-    <pd:endY>88</pd:endY>
+    <pd:endType wsMsgRef="pfx:RespGetUser"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1687246481646</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1687353029767</pd:targetNamespace>
     <pd:activity name="JDBC Query">
         <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>204</pd:x>
-        <pd:y>86</pd:y>
+        <pd:x>294</pd:x>
+        <pd:y>65</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
             <maxRows>1</maxRows>
             <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>SELECT * FROM users WHERE id = ?</statement>
             <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
             <wizardData/>
-            <statement>SELECT * FROM users
-WHERE id = ?</statement>
             <Prepared_Param_DataType>
                 <parameter>
                     <parameterName>id</parameterName>
@@ -60,38 +73,9 @@ WHERE id = ?</statement>
         <pd:inputBindings>
             <jdbcQueryActivityInput>
                 <id>
-                    <xsl:value-of select="$Start/id"/>
+                    <xsl:value-of select="$Start/pfx:ReqGetUser/Request/ns:id"/>
                 </id>
             </jdbcQueryActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Render JSON">
-        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
-        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>330</pd:x>
-        <pd:y>86</pd:y>
-        <config>
-            <SchemaType>xsdType</SchemaType>
-            <BadgerfishCheck>false</BadgerfishCheck>
-            <NullforEmptyvalues>true</NullforEmptyvalues>
-            <ActivityInputEditor ref="pfx:User"/>
-        </config>
-        <pd:inputBindings>
-            <ns:ActivityInputClass>
-                <pfx:User>
-                    <xsl:if test="$JDBC-Query/resultSet/Record[1]/id">
-                        <pfx:id>
-                            <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/id"/>
-                        </pfx:id>
-                    </xsl:if>
-                    <pfx:name>
-                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/name"/>
-                    </pfx:name>
-                    <pfx:status>
-                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/status"/>
-                    </pfx:status>
-                </pfx:User>
-            </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -103,13 +87,6 @@ WHERE id = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>JDBC Query</pd:from>
-        <pd:to>Render JSON</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Render JSON</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
