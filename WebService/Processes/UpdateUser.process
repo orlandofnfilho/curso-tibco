@@ -33,10 +33,6 @@
             <statement>UPDATE users SET users.name=?, users.status=? WHERE users.id=?</statement>
             <Prepared_Param_DataType>
                 <parameter>
-                    <parameterName>id</parameterName>
-                    <dataType>INTEGER</dataType>
-                </parameter>
-                <parameter>
                     <parameterName>name</parameterName>
                     <dataType>VARCHAR</dataType>
                 </parameter>
@@ -44,20 +40,14 @@
                     <parameterName>status</parameterName>
                     <dataType>VARCHAR</dataType>
                 </parameter>
+                <parameter>
+                    <parameterName>id</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
             </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
             <jdbcUpdateActivityInput>
-                <id>
-                    <xsl:choose>
-                        <xsl:when test="exists($Start/pfx:ReqAddUser/Request/ns:User/ns:id)">
-                            <xsl:value-of select="$Start/pfx:ReqAddUser/Request/ns:User/ns:id"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </id>
                 <name>
                     <xsl:choose>
                         <xsl:when test="exists($Start/pfx:ReqAddUser/Request/ns:User/ns:name)">
@@ -78,6 +68,16 @@
                         </xsl:otherwise>
                     </xsl:choose>
                 </status>
+                <id>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/pfx:ReqAddUser/Request/ns:User/ns:id)">
+                            <xsl:value-of select="$Start/pfx:ReqAddUser/Request/ns:User/ns:id"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </id>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
