@@ -51,14 +51,14 @@
     <pd:activity name="REST Dispatch and Reply">
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
-        <pd:x>302</pd:x>
-        <pd:y>63</pd:y>
+        <pd:x>303</pd:x>
+        <pd:y>60</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
             <RestService>
                 <InnerService>
-                    <ns0:application xmlns:ns0="http://wadl.dev.java.net/2009/02" name="Application">
-                        <ns0:resources name="RestService0" base="http://localhost:8080">
+                    <ns0:application xmlns:ns0="http://wadl.dev.java.net/2009/02" name="UserApplication">
+                        <ns0:resources name="UserService" base="http://localhost:8080">
                             <ns0:resource id="UserResource" path="users">
                                 <ns0:doc/>
                                 <ns0:method id="AddUser" name="POST">
@@ -101,6 +101,12 @@
                                             </xsl:template>
                                         </Output-Binding>
                                     </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
                                 </ns0:method>
                                 <ns0:method id="GetUser" name="GET">
                                     <ns0:doc/>
@@ -142,6 +148,13 @@
                                             </xsl:template>
                                         </Output-Binding>
                                     </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:param name="id" style="query" required="true"/>
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
                                 </ns0:method>
                                 <ns0:method id="DeleteUser" name="DELETE">
                                     <ns0:doc/>
@@ -183,6 +196,13 @@
                                             </xsl:template>
                                         </Output-Binding>
                                     </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:param name="id" style="query" required="true"/>
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
                                 </ns0:method>
                                 <ns0:method id="UpdateUser" name="PUT">
                                     <ns0:doc/>
@@ -229,12 +249,15 @@
                                             </xsl:template>
                                         </Output-Binding>
                                     </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:param name="id" style="query" required="true"/>
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
                                 </ns0:method>
-                                <ns0:param name="id" style="query" required="false"/>
-                            </ns0:resource>
-                            <ns0:resource id="Resource1" path="users/getall">
-                                <ns0:doc/>
-                                <ns0:method id="Method4" name="GET">
+                                <ns0:method id="GetAllUsers" name="GET">
                                     <ns0:doc/>
                                     <Binding process="/Processes/GetAllUsersImpl.process">
                                         <RESTResponseHeader>
@@ -251,7 +274,7 @@
                                             </xsd:element>
                                         </RESTResponseHeader>
                                         <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
                                                 <RESTResponse>
                                                     <xsl:if test="$End/Response">
                                                         <asciiContent>
@@ -267,6 +290,14 @@
                                             </xsl:template>
                                         </Output-Binding>
                                     </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/xml"/>
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response" status="200">
+                                        <ns0:representation mediaType="application/xml"/>
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
                                 </ns0:method>
                             </ns0:resource>
                         </ns0:resources>
