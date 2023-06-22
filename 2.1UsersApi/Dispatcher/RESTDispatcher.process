@@ -8,8 +8,8 @@
     <pd:starter name="HTTP Receiver">
         <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
         <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
-        <pd:x>131</pd:x>
-        <pd:y>58</pd:y>
+        <pd:x>163</pd:x>
+        <pd:y>53</pd:y>
         <config>
             <outputMode>String</outputMode>
             <defaultEncoding>ISO8859_1</defaultEncoding>
@@ -44,14 +44,14 @@
     </pd:starter>
     <pd:endName>End</pd:endName>
     <pd:endX>440</pd:endX>
-    <pd:endY>62</pd:endY>
+    <pd:endY>58</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1687245288930</pd:targetNamespace>
     <pd:activity name="REST Dispatch and Reply">
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
-        <pd:x>299</pd:x>
+        <pd:x>302</pd:x>
         <pd:y>63</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
@@ -203,7 +203,12 @@
                                         <Input-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                                             <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                                                 <PostData>
-                                                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/PostData"/>
+                                                    <id>
+                                                        <xsl:value-of select="$Input-Binding/params/query/id"/>
+                                                    </id>
+                                                    <UpdateUser>
+                                                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/PostData"/>
+                                                    </UpdateUser>
                                                 </PostData>
                                             </xsl:template>
                                         </Input-Binding>
@@ -226,6 +231,43 @@
                                     </Binding>
                                 </ns0:method>
                                 <ns0:param name="id" style="query" required="false"/>
+                            </ns0:resource>
+                            <ns0:resource id="Resource1" path="users/getall">
+                                <ns0:doc/>
+                                <ns0:method id="Method4" name="GET">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/GetAllUsersImpl.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/Response">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/Response"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
                             </ns0:resource>
                         </ns0:resources>
                     </ns0:application>

@@ -7,7 +7,7 @@
         <xsd:element name="PostData" type="xsd:string"/>
     </pd:startType>
     <pd:startX>45</pd:startX>
-    <pd:startY>107</pd:startY>
+    <pd:startY>106</pd:startY>
     <pd:returnBindings>
         <ResponseData>
             <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
@@ -45,7 +45,7 @@
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
         <pd:x>318</pd:x>
-        <pd:y>110</pd:y>
+        <pd:y>109</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -132,13 +132,6 @@
     <pd:transition>
         <pd:from>Render JSON</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>JDBC Update</pd:from>
-        <pd:to>SaveUserData</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

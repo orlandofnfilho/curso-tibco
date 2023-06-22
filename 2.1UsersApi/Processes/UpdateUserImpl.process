@@ -5,7 +5,14 @@
     <pd:name>Processes/UpdateUserImpl.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
-        <xsd:element name="PostData" type="xsd:string"/>
+        <xsd:element name="PostData">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:int"/>
+                    <xsd:element name="UpdateUser" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
     </pd:startType>
     <pd:startX>75</pd:startX>
     <pd:startY>85</pd:startY>
@@ -27,7 +34,7 @@
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
         <pd:x>382</pd:x>
-        <pd:y>87</pd:y>
+        <pd:y>86</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
@@ -38,10 +45,6 @@ SET name =?, status=?
 WHERE id=?</statement>
             <Prepared_Param_DataType>
                 <parameter>
-                    <parameterName>id</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
                     <parameterName>name</parameterName>
                     <dataType>VARCHAR</dataType>
                 </parameter>
@@ -49,26 +52,23 @@ WHERE id=?</statement>
                     <parameterName>status</parameterName>
                     <dataType>VARCHAR</dataType>
                 </parameter>
+                <parameter>
+                    <parameterName>id</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
             </Prepared_Param_DataType>
         </config>
         <pd:inputBindings>
             <jdbcUpdateActivityInput>
-                <id>
-                    <xsl:choose>
-                        <xsl:when test="exists($Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:id)">
-                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:id"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </id>
                 <name>
                     <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:name"/>
                 </name>
                 <status>
                     <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:status"/>
                 </status>
+                <id>
+                    <xsl:value-of select="$Start/PostData/id"/>
+                </id>
             </jdbcUpdateActivityInput>
         </pd:inputBindings>
     </pd:activity>
@@ -110,7 +110,7 @@ WHERE id=?</statement>
         <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
         <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
         <pd:x>223</pd:x>
-        <pd:y>88</pd:y>
+        <pd:y>87</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -120,7 +120,7 @@ WHERE id=?</statement>
         <pd:inputBindings>
             <ns:ActivityInputClass>
                 <jsonString>
-                    <xsl:value-of select="$Start/PostData"/>
+                    <xsl:value-of select="$Start/PostData/UpdateUser"/>
                 </jsonString>
             </ns:ActivityInputClass>
         </pd:inputBindings>

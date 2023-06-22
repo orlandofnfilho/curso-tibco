@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
-    <pd:name>Test/TestGetUser.process</pd:name>
+    <pd:name>UnitTests/TestGetUser.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>86</pd:startX>
     <pd:startY>96</pd:startY>
@@ -101,6 +101,28 @@
             <restMethodUI>GET</restMethodUI>
             <restResponseType>JSON</restResponseType>
             <authChoiceUI>No Authentication</authChoiceUI>
+            <restOutputReferNode>
+                <xsd:element xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="header">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Server" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Range" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Last-Modifie" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </restOutputReferNode>
+            <WADLPaths/>
+            <WADLBaseURL/>
+            <restMethodIDUI/>
         </config>
         <pd:inputBindings/>
     </pd:activity>
