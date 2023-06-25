@@ -14,8 +14,8 @@
     <pd:activity name="Parse&amp;RenderCatalogXML">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>290</pd:x>
-        <pd:y>63</pd:y>
+        <pd:x>292</pd:x>
+        <pd:y>61</pd:y>
         <config>
             <processName>/Processes/Services/SharedFolders/Parse&amp;RenderCatalogXML.process</processName>
         </config>

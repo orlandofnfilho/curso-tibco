@@ -33,7 +33,7 @@
                 </ns2:Header>
                 <ns4:Body>
                     <ns4:sourcePath>
-                        <xsl:value-of select="'C:\Users\NelsonDias\OneDrive - P8G Group, Lda\Ambiente de Trabalho\TIBCO_Udemy_Course\Files\Input\'"/>
+                        <xsl:value-of select="'E:\Projetos\curso-tibco\Files\Input\'"/>
                     </ns4:sourcePath>
                     <ns4:sourceFileName>
                         <xsl:value-of select="'Orders.xml'"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://xmlns.example.com/1687344424922" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/schemas/WebService/SharedResources/Schemas/UsersSchemas.xsd">
-    <wsdl:import namespace="http://xmlns.example.com/1687344424922" location="/SharedResources/WSDL/UsersWDL.wsdl"/>
+    <wsdl:import namespace="http://xmlns.example.com/1687344424922" location="/SharedResources/WSDL/UsersWSDL.wsdl"/>
     <pd:name>Processes/GetUsers.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType wsMsgRef="pfx:ReqGetUsers"/>

@@ -18,14 +18,14 @@
         <xsd:element name="ResponseData" type="xsd:string"/>
     </pd:endType>
     <pd:endX>588</pd:endX>
-    <pd:endY>106</pd:endY>
+    <pd:endY>109</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1687245710155</pd:targetNamespace>
     <pd:activity name="Parse JSON">
         <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
         <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
-        <pd:x>179</pd:x>
+        <pd:x>180</pd:x>
         <pd:y>107</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
@@ -45,7 +45,7 @@
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
         <pd:x>318</pd:x>
-        <pd:y>109</pd:y>
+        <pd:y>108</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>

@@ -2,29 +2,29 @@
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Commons/Header" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/0.ProjectZero/Resources/Schemas/Models/Context" xmlns:ns="http://www.tibco.com/schemas/3.Files/Resources/Schemas/Services/ListReadFilesRequest">
     <pd:name>Tests/TestList&amp;ReadFiles.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>74</pd:startX>
-    <pd:startY>81</pd:startY>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>444</pd:endX>
-    <pd:endY>77</pd:endY>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
-    <pd:targetNamespace>http://xmlns.example.com/1685972430825</pd:targetNamespace>
+    <pd:targetNamespace>http://xmlns.example.com/1639053800331</pd:targetNamespace>
     <pd:activity name="List&amp;ReadFiles">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>279</pd:x>
-        <pd:y>71</pd:y>
+        <pd:x>305</pd:x>
+        <pd:y>61</pd:y>
         <config>
             <processName>/Processes/Services/SharedFolders/List&amp;ReadFiles.process</processName>
         </config>
         <pd:inputBindings>
-            <ns:ListReadFilesRequestuest>
+            <ns:ListReadFilesRequest>
                 <pfx:Header>
                     <pfx2:Context>
                         <pfx2:correlationId>
-                            <xsl:value-of select="&quot;123456&quot;"/>
+                            <xsl:value-of select="'123456'"/>
                         </pfx2:correlationId>
                     </pfx2:Context>
                     <pfx:timestamp>
@@ -33,13 +33,13 @@
                 </pfx:Header>
                 <ns:Body>
                     <ns:sourcePath>
-                        <xsl:value-of select="&quot;E:\Projetos\curso-tibco\Files\Input\&quot;"/>
+                        <xsl:value-of select="'E:\Projetos\curso-tibco\Files\Input\'"/>
                     </ns:sourcePath>
                     <ns:sourceFilePattern>
-                        <xsl:value-of select="&quot;*&quot;"/>
+                        <xsl:value-of select="'*'"/>
                     </ns:sourceFilePattern>
                 </ns:Body>
-            </ns:ListReadFilesRequestuest>
+            </ns:ListReadFilesRequest>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>

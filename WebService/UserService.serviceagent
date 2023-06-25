@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <serviceResource xmlns:wsdl="http://xmlns.example.com/1687344424922">
-    <ns0:import xmlns:ns0="http://schemas.xmlsoap.org/wsdl/" namespace="http://xmlns.example.com/1687344424922" location="/SharedResources/WSDL/UsersWDL.wsdl"/>
+    <ns0:import xmlns:ns0="http://schemas.xmlsoap.org/wsdl/" namespace="http://xmlns.example.com/1687344424922" location="/SharedResources/WSDL/UsersWSDL.wsdl"/>
     <config>
         <wsdl namespace="http://xmlns.example.com/1687351472460" embedWsdlComponents="true" embedSchemaComponents="true" embedJndiProperties="false"/>
         <class>com.tibco.bw.service.serviceAgent.ServiceServiceAgent</class>
@@ -16,7 +16,7 @@
                 <tabName>UsersPortType2</tabName>
                 <tabType>bw</tabType>
                 <config>
-                    <wsdlDetail location="/SharedResources/WSDL/UsersWDL.wsdl" portType="UsersPortType" ns="http://xmlns.example.com/1687344424922"/>
+                    <wsdlDetail location="/SharedResources/WSDL/UsersWSDL.wsdl" portType="UsersPortType" ns="http://xmlns.example.com/1687344424922"/>
                     <detail>
                         <tab>
                             <tabName>service.definition.impl.tab.label</tabName>
