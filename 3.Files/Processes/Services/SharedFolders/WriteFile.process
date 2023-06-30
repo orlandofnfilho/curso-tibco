@@ -5,8 +5,8 @@
     <pd:name>Processes/Services/SharedFolders/WriteFile.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType ref="pfx:WriteFileRequest"/>
-    <pd:startX>150</pd:startX>
-    <pd:startY>64</pd:startY>
+    <pd:startX>149</pd:startX>
+    <pd:startY>63</pd:startY>
     <pd:returnBindings>
         <pfx2:WriteFileResponse>
             <xsl:copy-of select="$Start/pfx:WriteFileRequest/ns:Header"/>
@@ -35,8 +35,8 @@
     <pd:activity name="Write File">
         <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
         <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
-        <pd:x>302</pd:x>
-        <pd:y>63</pd:y>
+        <pd:x>301</pd:x>
+        <pd:y>62</pd:y>
         <config>
             <encoding>text</encoding>
             <compressFile>None</compressFile>

@@ -8,8 +8,8 @@
     <pd:starter name="Timer">
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
-        <pd:x>112</pd:x>
-        <pd:y>70</pd:y>
+        <pd:x>113</pd:x>
+        <pd:y>59</pd:y>
         <config>
             <StartTime>1638117280000</StartTime>
             <Frequency>true</Frequency>

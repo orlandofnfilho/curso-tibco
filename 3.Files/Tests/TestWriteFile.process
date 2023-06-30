@@ -15,7 +15,7 @@
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>297</pd:x>
-        <pd:y>64</pd:y>
+        <pd:y>62</pd:y>
         <config>
             <processName>/Processes/Services/SharedFolders/WriteFile.process</processName>
         </config>
@@ -33,7 +33,7 @@
                 </ns2:Header>
                 <ns:Body>
                     <ns:sourcePath>
-                        <xsl:value-of select="'E:\Projetos\curso-tibco\Files\Input\'"/>
+                        <xsl:value-of select="'E:\Projetos\curso-tibco\Files\Output\'"/>
                     </ns:sourcePath>
                     <ns:sourceFileName>
                         <xsl:value-of select="concat('file_',tib:format-dateTime('YYYYMMssHHmmss', current-dateTime()),'.txt')"/>
