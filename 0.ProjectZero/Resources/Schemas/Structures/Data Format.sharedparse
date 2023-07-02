@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <name>Data Format</name>
+    <resourceType>ae.shared.ParseSharedResource</resourceType>
+    <config xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <FormatType>Fixed format</FormatType>
+        <ColumnSeparator>,</ColumnSeparator>
+        <ColSeparatorRule>Treat all characters as entered as a single column separator string</ColSeparatorRule>
+        <LineSeparator>
+</LineSeparator>
+        <FillCharacter>Space</FillCharacter>
+        <LineLength>232</LineLength>
+        <OffsetString>naoper(0,10)
+nome(10,60)
+endereco(60,180)
+cidade(180,230)
+estado(230,232)</OffsetString>
+        <DataFormat>
+            <xsd:element name="EMPRESA">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="naoper" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="nome" type="xsd:string"/>
+                        <xsd:element name="endereco" type="xsd:string"/>
+                        <xsd:element name="cidade" type="xsd:string"/>
+                        <xsd:element name="estado" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </DataFormat>
+    </config>
+</BWSharedResource>

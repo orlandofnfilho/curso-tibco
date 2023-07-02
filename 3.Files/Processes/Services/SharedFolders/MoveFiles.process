@@ -35,13 +35,14 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>221</pd:x>
-        <pd:y>14</pd:y>
+        <pd:x>223</pd:x>
+        <pd:y>16</pd:y>
         <pd:width>290</pd:width>
         <pd:height>274</pd:height>
-        <pd:collapsedWidth>52</pd:collapsedWidth>
-        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
             <pd:groupType>errorLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
@@ -82,8 +83,8 @@
         <pd:activity name="Rename File">
             <pd:type>com.tibco.plugin.file.FileRenameActivity</pd:type>
             <pd:resourceType>ae.activities.FileRenameActivity</pd:resourceType>
-            <pd:x>332</pd:x>
-            <pd:y>82</pd:y>
+            <pd:x>334</pd:x>
+            <pd:y>84</pd:y>
             <config>
                 <overwrite>true</overwrite>
             </config>
@@ -101,8 +102,8 @@
         <pd:activity name="Sleep">
             <pd:type>com.tibco.plugin.timer.SleepActivity</pd:type>
             <pd:resourceType>ae.activities.sleep</pd:resourceType>
-            <pd:x>333</pd:x>
-            <pd:y>202</pd:y>
+            <pd:x>335</pd:x>
+            <pd:y>204</pd:y>
             <config/>
             <pd:inputBindings>
                 <ns0:SleepInputSchema xmlns:ns0="www.tibco.com/plugin/Sleep">
@@ -115,8 +116,8 @@
         <pd:activity name="Generate Error">
             <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
             <pd:resourceType>ae.activities.throw</pd:resourceType>
-            <pd:x>443</pd:x>
-            <pd:y>204</pd:y>
+            <pd:x>445</pd:x>
+            <pd:y>206</pd:y>
             <config>
                 <faultName/>
             </config>

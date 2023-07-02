@@ -252,7 +252,7 @@
             <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
             <pd:resourceType>ae.activities.null</pd:resourceType>
             <pd:x>607</pd:x>
-            <pd:y>451</pd:y>
+            <pd:y>450</pd:y>
             <config/>
             <pd:inputBindings/>
         </pd:activity>
