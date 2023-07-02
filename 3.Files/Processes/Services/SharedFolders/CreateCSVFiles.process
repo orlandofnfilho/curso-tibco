@@ -124,9 +124,10 @@
         <pd:y>55</pd:y>
         <pd:width>322</pd:width>
         <pd:height>205</pd:height>
-        <pd:collapsedWidth>52</pd:collapsedWidth>
-        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
@@ -162,7 +163,7 @@
         <pd:activity name="Render current Row User Data">
             <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
             <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
-            <pd:x>812</pd:x>
+            <pd:x>811</pd:x>
             <pd:y>173</pd:y>
             <config>
                 <ParseSharedConfig>/Resources/CSV/Data Format.sharedparse</ParseSharedConfig>
@@ -193,7 +194,7 @@
             <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
             <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
             <pd:x>941</pd:x>
-            <pd:y>168</pd:y>
+            <pd:y>167</pd:y>
             <config>
                 <encoding>text</encoding>
                 <compressFile>None</compressFile>
