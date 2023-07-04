@@ -3,90 +3,14 @@
     <pd:name>Processes/Services/CreateCSVFromDatabase.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>67</pd:startX>
-    <pd:startY>134</pd:startY>
+    <pd:startY>77</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>849</pd:endX>
-    <pd:endY>135</pd:endY>
+    <pd:endY>77</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1688299331559</pd:targetNamespace>
-    <pd:activity name="JDBC Query">
-        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
-        <pd:x>413</pd:x>
-        <pd:y>135</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <maxRows>100</maxRows>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/Resources/Connections/JDBC/DatabaseConnection.sharedjdbc</jdbcSharedConfig>
-            <statement>SELECT * FROM users;</statement>
-            <oraObjects/>
-            <oraTables/>
-            <QueryOutputCachedSchemaColumns>id</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>BIGINT</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>name</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <QueryOutputCachedSchemaColumns>status</QueryOutputCachedSchemaColumns>
-            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
-            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
-            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
-            <wizardData/>
-        </config>
-        <pd:inputBindings>
-            <jdbcQueryActivityInput/>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Render Data">
-        <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
-        <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
-        <pd:x>184</pd:x>
-        <pd:y>137</pd:y>
-        <config>
-            <ParseSharedConfig>/Resources/Schemas/Structures/UserDataFormat.sharedparse</ParseSharedConfig>
-        </config>
-        <pd:inputBindings>
-            <Rows>
-                <User>
-                    <id>
-                        <xsl:value-of select="concat('&quot;','ID','&quot;')"/>
-                    </id>
-                    <name>
-                        <xsl:value-of select="concat('&quot;','NAME','&quot;')"/>
-                    </name>
-                    <status>
-                        <xsl:value-of select="concat('&quot;','STATUS','&quot;')"/>
-                    </status>
-                </User>
-            </Rows>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:activity name="Write File">
-        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
-        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
-        <pd:x>300</pd:x>
-        <pd:y>137</pd:y>
-        <config>
-            <encoding>text</encoding>
-            <compressFile>None</compressFile>
-        </config>
-        <pd:inputBindings>
-            <ns:WriteActivityInputTextClass>
-                <fileName>
-                    <xsl:value-of select="'E:\Downloads\users.csv'"/>
-                </fileName>
-                <textContent>
-                    <xsl:value-of select="$Render-Data/Text"/>
-                </textContent>
-            </ns:WriteActivityInputTextClass>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
@@ -94,9 +18,10 @@
         <pd:y>43</pd:y>
         <pd:width>294</pd:width>
         <pd:height>164</pd:height>
-        <pd:collapsedWidth>52</pd:collapsedWidth>
-        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
@@ -175,6 +100,82 @@
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
+    <pd:activity name="JDBC Query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>413</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Resources/Connections/JDBC/DatabaseConnection.sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT * FROM users;</statement>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>id</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>BIGINT</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>status</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>VARCHAR</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <wizardData/>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Data">
+        <pd:type>com.tibco.plugin.parse.RenderActivity</pd:type>
+        <pd:resourceType>ae.activities.RenderActivity</pd:resourceType>
+        <pd:x>184</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <ParseSharedConfig>/Resources/Schemas/Structures/UserDataFormat.sharedparse</ParseSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <Rows>
+                <User>
+                    <id>
+                        <xsl:value-of select="concat('&quot;','ID','&quot;')"/>
+                    </id>
+                    <name>
+                        <xsl:value-of select="concat('&quot;','NAME','&quot;')"/>
+                    </name>
+                    <status>
+                        <xsl:value-of select="concat('&quot;','STATUS','&quot;')"/>
+                    </status>
+                </User>
+            </Rows>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Write File">
+        <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+        <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>78</pd:y>
+        <config>
+            <encoding>text</encoding>
+            <compressFile>None</compressFile>
+        </config>
+        <pd:inputBindings>
+            <ns:WriteActivityInputTextClass>
+                <fileName>
+                    <xsl:value-of select="'E:\Downloads\users.csv'"/>
+                </fileName>
+                <textContent>
+                    <xsl:value-of select="$Render-Data/Text"/>
+                </textContent>
+            </ns:WriteActivityInputTextClass>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Render Data</pd:to>
