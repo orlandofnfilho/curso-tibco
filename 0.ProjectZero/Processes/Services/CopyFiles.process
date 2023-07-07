@@ -2,12 +2,12 @@
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/file">
     <pd:name>Processes/Services/CopyFiles.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>106</pd:startX>
-    <pd:startY>116</pd:startY>
+    <pd:startX>131</pd:startX>
+    <pd:startY>113</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
-    <pd:endX>442</pd:endX>
-    <pd:endY>116</pd:endY>
+    <pd:endX>502</pd:endX>
+    <pd:endY>113</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1688301947439</pd:targetNamespace>
@@ -18,6 +18,7 @@
         <pd:y>116</pd:y>
         <config>
             <overwrite>true</overwrite>
+            <createMissingDirectories>true</createMissingDirectories>
         </config>
         <pd:inputBindings>
             <ns:CopyActivityConfig>
@@ -30,6 +31,33 @@
             </ns:CopyActivityConfig>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Rename File">
+        <pd:type>com.tibco.plugin.file.FileRenameActivity</pd:type>
+        <pd:resourceType>ae.activities.FileRenameActivity</pd:resourceType>
+        <pd:x>369</pd:x>
+        <pd:y>113</pd:y>
+        <config>
+            <overwrite>true</overwrite>
+            <createMissingDirectories>true</createMissingDirectories>
+        </config>
+        <pd:inputBindings>
+            <ns:RenameActivityConfig>
+                <fromFileName>
+                    <xsl:value-of select="'E:\Downloads\variaveis.txt'"/>
+                </fromFileName>
+                <toFileName>
+                    <xsl:value-of select="'E:\Downloads\variaveis-ambiente.txt'"/>
+                </toFileName>
+            </ns:RenameActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Copy File</pd:from>
+        <pd:to>Rename File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Copy File</pd:to>
@@ -38,7 +66,7 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Copy File</pd:from>
+        <pd:from>Rename File</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

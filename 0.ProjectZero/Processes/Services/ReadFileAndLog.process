@@ -8,8 +8,8 @@
     <pd:starter name="File Poller">
         <pd:type>com.tibco.plugin.file.FileEventSource</pd:type>
         <pd:resourceType>ae.activities.FileEventSourceResource</pd:resourceType>
-        <pd:x>75</pd:x>
-        <pd:y>112</pd:y>
+        <pd:x>116</pd:x>
+        <pd:y>117</pd:y>
         <config>
             <pollInterval>5</pollInterval>
             <createEvent>true</createEvent>
@@ -27,16 +27,16 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>708</pd:endX>
-    <pd:endY>112</pd:endY>
+    <pd:endX>579</pd:endX>
+    <pd:endY>117</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1688207334694</pd:targetNamespace>
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>563</pd:x>
-        <pd:y>112</pd:y>
+        <pd:x>471</pd:x>
+        <pd:y>117</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -54,8 +54,8 @@
     <pd:activity name="Parse Data">
         <pd:type>com.tibco.plugin.parse.ParseActivity</pd:type>
         <pd:resourceType>ae.activities.ParseActivity</pd:resourceType>
-        <pd:x>255</pd:x>
-        <pd:y>112</pd:y>
+        <pd:x>233</pd:x>
+        <pd:y>117</pd:y>
         <config>
             <InputType>String</InputType>
             <Encoding>ASCII</Encoding>
@@ -76,8 +76,8 @@
     <pd:activity name="Render XML">
         <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
         <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
-        <pd:x>408</pd:x>
-        <pd:y>112</pd:y>
+        <pd:x>353</pd:x>
+        <pd:y>117</pd:y>
         <config>
             <renderAsText>text</renderAsText>
             <validateInput>true</validateInput>

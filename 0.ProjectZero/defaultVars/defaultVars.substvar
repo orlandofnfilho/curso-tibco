@@ -2,6 +2,14 @@
 <repository xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xmlns = "http://www.tibco.com/xmlns/repo/types/2002">
 	<globalVariables>
 		<globalVariable>
+			<name>ADBScriptFileDir</name>
+			<value>C:\tibco\adapter\adadb\7.2\sql</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1688746164471</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>Deployment</name>
 			<value>0.ProjectZero</value>
 			<deploymentSettable>true</deploymentSettable>
@@ -15,7 +23,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1637858124432</modTime>
+			<modTime>1688746164474</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>DirTrace</name>
@@ -23,7 +31,7 @@
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1637858124324</modTime>
+			<modTime>1688746164472</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>Domain</name>
@@ -35,11 +43,11 @@
 		</globalVariable>
 		<globalVariable>
 			<name>HawkEnabled</name>
-			<value>false</value>
+			<value>true</value>
 			<deploymentSettable>true</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
-			<modTime>1637858124441</modTime>
+			<modTime>1688579566123</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>JmsProviderUrl</name>

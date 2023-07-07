@@ -51,8 +51,8 @@
     <pd:activity name="REST Dispatch and Reply">
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
-        <pd:x>303</pd:x>
-        <pd:y>60</pd:y>
+        <pd:x>304</pd:x>
+        <pd:y>59</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
             <RestService>
