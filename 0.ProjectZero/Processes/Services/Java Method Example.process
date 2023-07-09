@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="www.tibco.com/plugin/java/JavaMethodActivityInput" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Processes/Services/Java Method Example.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>87</pd:startX>
+    <pd:startY>165</pd:startY>
+    <pd:returnBindings>
+        <Response>
+            <msg>
+                <xsl:value-of select="$SetVariable/Shared-Variable"/>
+            </msg>
+        </Response>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Response">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="msg" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>489</pd:endX>
+    <pd:endY>131</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1688856032155</pd:targetNamespace>
+    <pd:activity name="SetVariable">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>202</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <variableConfig>/Resources/SharedVariables/Shared Variable.sharedvariable</variableConfig>
+            <showResult>true</showResult>
+        </config>
+        <pd:inputBindings>
+            <Shared-Variable>
+                <xsl:value-of select="'Shared Variable'"/>
+            </Shared-Variable>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SetVariable-1">
+        <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
+        <pd:x>216</pd:x>
+        <pd:y>230</pd:y>
+        <config>
+            <variableConfig>/Resources/SharedVariables/Job Shared Variable.jobsharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings>
+            <Job-Shared-Variable>
+                <xsl:value-of select="'Job Shared Varible'"/>
+            </Job-Shared-Variable>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SetVariable</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetVariable</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetVariable-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SetVariable-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -11,7 +11,7 @@
         <pd:type>com.tibco.plugin.timer.TimerEventSource</pd:type>
         <pd:resourceType>ae.activities.timer</pd:resourceType>
         <pd:x>132</pd:x>
-        <pd:y>123</pd:y>
+        <pd:y>122</pd:y>
         <config>
             <StartTime>1639418279000</StartTime>
             <Frequency>true</Frequency>
@@ -62,13 +62,14 @@
     <pd:group name="Group">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>584</pd:x>
-        <pd:y>14</pd:y>
+        <pd:x>585</pd:x>
+        <pd:y>15</pd:y>
         <pd:width>289</pd:width>
         <pd:height>196</pd:height>
-        <pd:collapsedWidth>52</pd:collapsedWidth>
-        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
@@ -98,7 +99,7 @@
             <pd:type>com.tibco.plugin.jms.JMSTopicPublishActivity</pd:type>
             <pd:resourceType>ae.activities.JMSTopicPublishActivity</pd:resourceType>
             <pd:x>726</pd:x>
-            <pd:y>127</pd:y>
+            <pd:y>128</pd:y>
             <config>
                 <PermittedMessageType>XML Text</PermittedMessageType>
                 <SessionAttributes>

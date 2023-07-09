@@ -15,7 +15,7 @@
         <pd:type>com.tibco.plugin.jms.JMSQueueRequestReplyActivity</pd:type>
         <pd:resourceType>ae.activities.JMSQueueRequestReplyActivity</pd:resourceType>
         <pd:x>242</pd:x>
-        <pd:y>158</pd:y>
+        <pd:y>157</pd:y>
         <config>
             <PermittedMessageType>Text</PermittedMessageType>
             <SessionAttributes>
