@@ -1,76 +1,282 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="www.tibco.com/plugin/java/JavaMethodActivityInput" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="www.tibco.com/plugin/java/JavaMethodActivityInput" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
     <pd:name>Processes/Services/Java Method Example.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>87</pd:startX>
-    <pd:startY>165</pd:startY>
+    <pd:startX>82</pd:startX>
+    <pd:startY>181</pd:startY>
     <pd:returnBindings>
-        <Response>
-            <msg>
-                <xsl:value-of select="$SetVariable/Shared-Variable"/>
-            </msg>
-        </Response>
+        <Response/>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
-    <pd:endType>
-        <xsd:element name="Response">
-            <xsd:complexType>
-                <xsd:sequence>
-                    <xsd:element name="msg" type="xsd:string"/>
-                </xsd:sequence>
-            </xsd:complexType>
-        </xsd:element>
-    </pd:endType>
-    <pd:endX>489</pd:endX>
-    <pd:endY>131</pd:endY>
+    <pd:endX>964</pd:endX>
+    <pd:endY>183</pd:endY>
     <pd:errorSchemas/>
-    <pd:processVariables/>
+    <pd:processVariables>
+        <Variable0>
+            <xsd:element name="root" type="xsd:string"/>
+        </Variable0>
+    </pd:processVariables>
     <pd:targetNamespace>http://xmlns.example.com/1688856032155</pd:targetNamespace>
-    <pd:activity name="SetVariable">
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>868</pd:x>
+        <pd:y>183</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Java-Code-1/javaCodeActivityOutput/resutlado"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java-Code-1">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>631</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <fileName>JavaMethodExampleJavaCode1</fileName>
+            <packageName>Processes.Services.JavaMethodExample</packageName>
+            <fullsource>package Processes.Services.JavaMethodExample;
+import java.util.*;
+import java.io.*;
+public class JavaMethodExampleJavaCode1{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected Date date1 = null;
+	protected Date date2 = null;
+	protected int resutlado = 0;
+	public Date getdate1() {
+		return date1;
+	}
+	public void setdate1(Date val) {
+		date1 = val;
+	}
+	public Date getdate2() {
+		return date2;
+	}
+	public void setdate2(Date val) {
+		date2 = val;
+	}
+	public int getresutlado() {
+		return resutlado;
+	}
+	public void setresutlado(int val) {
+		resutlado = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public JavaMethodExampleJavaCode1() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : Date date1
+	In  : Date date2
+	Out : int resutlado
+* Available Variables: DO NOT MODIFY *****/
+int result  = date1.compareTo(date2);
+setresutlado(result);
+	}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>date1</fieldName>
+                    <fieldType>dateTime</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>date2</fieldName>
+                    <fieldType>dateTime</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>resutlado</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>JavaMethodExampleJavaCode1</name>
+                    <byteCode>yv66vgAAADQALgkABwAhCQAHACIJAAcAIwoACAAkCgAlACYKAAcAJwcAKAcAKQEABWRhdGUxAQAQTGphdmEvdXRpbC9EYXRlOwEABWRhdGUyAQAJcmVzdXRsYWRvAQABSQEACGdldGRhdGUxAQASKClMamF2YS91dGlsL0RhdGU7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEACHNldGRhdGUxAQATKExqYXZhL3V0aWwvRGF0ZTspVgEACGdldGRhdGUyAQAIc2V0ZGF0ZTIBAAxnZXRyZXN1dGxhZG8BAAMoKUkBAAxzZXRyZXN1dGxhZG8BAAQoSSlWAQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAKgEAClNvdXJjZUZpbGUBAB9KYXZhTWV0aG9kRXhhbXBsZUphdmFDb2RlMS5qYXZhDAAJAAoMAAsACgwADAANDAAaABsHACsMACwALQwAGAAZAQA/UHJvY2Vzc2VzL1NlcnZpY2VzL0phdmFNZXRob2RFeGFtcGxlL0phdmFNZXRob2RFeGFtcGxlSmF2YUNvZGUxAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BAA5qYXZhL3V0aWwvRGF0ZQEACWNvbXBhcmVUbwEAEyhMamF2YS91dGlsL0RhdGU7KUkAIQAHAAgAAAADAAQACQAKAAAABAALAAoAAAAEAAwADQAAAAgAAQAOAA8AAQAQAAAAHQABAAEAAAAFKrQAAbAAAAABABEAAAAGAAEAAAAKAAEAEgATAAEAEAAAACIAAgACAAAABiortQABsQAAAAEAEQAAAAoAAgAAAA0ABQAOAAEAFAAPAAEAEAAAAB0AAQABAAAABSq0AAKwAAAAAQARAAAABgABAAAAEAABABUAEwABABAAAAAiAAIAAgAAAAYqK7UAArEAAAABABEAAAAKAAIAAAATAAUAFAABABYAFwABABAAAAAdAAEAAQAAAAUqtAADrAAAAAEAEQAAAAYAAQAAABYAAQAYABkAAQAQAAAAIgACAAIAAAAGKhu1AAOxAAAAAQARAAAACgACAAAAGQAFABoAAQAaABsAAQAQAAAAPAACAAEAAAAUKrcABCoBtQABKgG1AAIqA7UAA7EAAAABABEAAAAWAAUAAAAcAAQABgAJAAcADgAIABMAHQABABwAGwACABAAAAAyAAIAAgAAABIqtAABKrQAArYABTwqG7YABrEAAAABABEAAAAOAAMAAAAkAAwAJQARACYAHQAAAAQAAQAeAAEAHwAAAAIAIA==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <date1>
+                    <xsl:value-of select="tib:parse-dateTime(&quot;yyyy-MM-dd'T'HH:mm:ss&quot;, string($Java-Code/javaCodeActivityOutput/data))"/>
+                </date1>
+                <xsl:choose>
+                    <xsl:when test="string-length(string($GetRecente/root)) &lt;= 0">
+                        <date2>
+                            <xsl:value-of select="tib:parse-dateTime(&quot;yyyy-MM-dd'T'HH:mm:ss&quot;, &quot;2023-07-20T10:30:00&quot;)"/>
+                        </date2>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <date2>
+                            <xsl:value-of select="tib:parse-dateTime(&quot;yyyy-MM-dd'T'HH:mm:ss&quot;, string($SetDataAtual/root))"/>
+                        </date2>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>183</pd:x>
+        <pd:y>184</pd:y>
+        <config>
+            <fileName>JavaMethodExampleJavaCode</fileName>
+            <packageName>Processes.Services.JavaMethodExample</packageName>
+            <fullsource>package Processes.Services.JavaMethodExample;
+import java.util.*;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+public class JavaMethodExampleJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String nomeArquivo = "";
+	protected Date data = null;
+	public String getnomeArquivo() {
+		return nomeArquivo;
+	}
+	public void setnomeArquivo(String val) {
+		nomeArquivo = val;
+	}
+	public Date getdata() {
+		return data;
+	}
+	public void setdata(Date val) {
+		data = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+    public JavaMethodExampleJavaCode() {
+    }
+    public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String nomeArquivo
+	Out : Date data
+* Available Variables: DO NOT MODIFY *****/
+String dateStr = nomeArquivo.substring(3, 17);
+SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyHHmmss");
+Date dataParse = sdf.parse(dateStr);
+setdata(dataParse);
+    }
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>nomeArquivo</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>data</fieldName>
+                    <fieldType>dateTime</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>JavaMethodExampleJavaCode</name>
+                    <byteCode>yv66vgAAADQANQkACwAiCQALACMKAAwAJAgAJQoAJgAnBwAoCAApCgAGACoKAAYAKwoACwAsBwAtBwAuAQALbm9tZUFycXVpdm8BABJMamF2YS9sYW5nL1N0cmluZzsBAARkYXRhAQAQTGphdmEvdXRpbC9EYXRlOwEADmdldG5vbWVBcnF1aXZvAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAOc2V0bm9tZUFycXVpdm8BABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAdnZXRkYXRhAQASKClMamF2YS91dGlsL0RhdGU7AQAHc2V0ZGF0YQEAEyhMamF2YS91dGlsL0RhdGU7KVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwAvAQAKU291cmNlRmlsZQEAHkphdmFNZXRob2RFeGFtcGxlSmF2YUNvZGUuamF2YQwADQAODAAPABAMABsAHAEAAAcAMAwAMQAyAQAaamF2YS90ZXh0L1NpbXBsZURhdGVGb3JtYXQBAA5kZE1NeXl5eUhIbW1zcwwAGwAWDAAzADQMABkAGgEAPlByb2Nlc3Nlcy9TZXJ2aWNlcy9KYXZhTWV0aG9kRXhhbXBsZS9KYXZhTWV0aG9kRXhhbXBsZUphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABBqYXZhL2xhbmcvU3RyaW5nAQAJc3Vic3RyaW5nAQAWKElJKUxqYXZhL2xhbmcvU3RyaW5nOwEABXBhcnNlAQAkKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS91dGlsL0RhdGU7ACEACwAMAAAAAgAEAA0ADgAAAAQADwAQAAAABgABABEAEgABABMAAAAdAAEAAQAAAAUqtAABsAAAAAEAFAAAAAYAAQAAAAsAAQAVABYAAQATAAAAIgACAAIAAAAGKiu1AAGxAAAAAQAUAAAACgACAAAADgAFAA8AAQAXABgAAQATAAAAHQABAAEAAAAFKrQAArAAAAABABQAAAAGAAEAAAARAAEAGQAaAAEAEwAAACIAAgACAAAABiortQACsQAAAAEAFAAAAAoAAgAAABQABQAVAAEAGwAcAAEAEwAAADQAAgABAAAAECq3AAMqEgS1AAEqAbUAArEAAAABABQAAAASAAQAAAAXAAQACAAKAAkADwAYAAEAHQAcAAIAEwAAAEkAAwAEAAAAISq0AAEGEBG2AAVMuwAGWRIHtwAITSwrtgAJTiottgAKsQAAAAEAFAAAABYABQAAAB4ACwAfABUAIAAbACEAIAAiAB4AAAAEAAEAHwABACAAAAACACE=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <nomeArquivo>
+                    <xsl:value-of select="&quot;RET20072023103000_RET_PROCGRAFICA_EMAIL_SMS.XML&quot;"/>
+                </nomeArquivo>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>417</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Java-Code/javaCodeActivityOutput/data"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SetDataAtual">
         <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
         <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
-        <pd:x>202</pd:x>
-        <pd:y>97</pd:y>
+        <pd:x>304</pd:x>
+        <pd:y>181</pd:y>
         <config>
-            <variableConfig>/Resources/SharedVariables/Shared Variable.sharedvariable</variableConfig>
+            <variableConfig>/Processes/SFTP GET &amp; PUT Files Simulator/Atual.sharedvariable</variableConfig>
             <showResult>true</showResult>
         </config>
         <pd:inputBindings>
-            <Shared-Variable>
-                <xsl:value-of select="'Shared Variable'"/>
-            </Shared-Variable>
+            <root>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/data"/>
+            </root>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="SetVariable-1">
+    <pd:activity name="GetRecente">
+        <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
+        <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
+        <pd:x>525</pd:x>
+        <pd:y>185</pd:y>
+        <config>
+            <variableConfig>/Processes/SFTP GET &amp; PUT Files Simulator/Recente.sharedvariable</variableConfig>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="SetRecente">
         <pd:type>com.tibco.pe.core.SetSharedVariableActivity</pd:type>
         <pd:resourceType>ae.activities.setSharedVariable</pd:resourceType>
-        <pd:x>216</pd:x>
-        <pd:y>230</pd:y>
+        <pd:x>755</pd:x>
+        <pd:y>183</pd:y>
         <config>
-            <variableConfig>/Resources/SharedVariables/Job Shared Variable.jobsharedvariable</variableConfig>
+            <showResult>true</showResult>
+            <variableConfig>/Processes/SFTP GET &amp; PUT Files Simulator/Recente.sharedvariable</variableConfig>
         </config>
         <pd:inputBindings>
-            <Job-Shared-Variable>
-                <xsl:value-of select="'Job Shared Varible'"/>
-            </Job-Shared-Variable>
+            <xsl:choose>
+                <xsl:when test="$Java-Code-1/javaCodeActivityOutput/resutlado = 1">
+                    <root>
+                        <xsl:value-of select="$SetDataAtual/root"/>
+                    </root>
+                </xsl:when>
+                <xsl:otherwise>
+                    <root>
+                        <xsl:value-of select="$GetRecente/root"/>
+                    </root>
+                </xsl:otherwise>
+            </xsl:choose>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>585</pd:x>
+        <pd:y>292</pd:y>
+        <config>
+            <variableName>Variable0</variableName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
     <pd:transition>
-        <pd:from>Start</pd:from>
-        <pd:to>SetVariable</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>SetVariable</pd:from>
-        <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>SetVariable-1</pd:from>
+        <pd:from>Log</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -78,7 +284,49 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>SetVariable-1</pd:to>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java-Code-1</pd:from>
+        <pd:to>SetRecente</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>SetDataAtual</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetDataAtual</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>GetRecente</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GetRecente</pd:from>
+        <pd:to>Java-Code-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SetRecente</pd:from>
+        <pd:to>Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

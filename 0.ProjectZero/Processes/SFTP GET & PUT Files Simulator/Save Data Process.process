@@ -2,8 +2,8 @@
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
     <pd:name>Processes/SFTP GET &amp; PUT Files Simulator/Save Data Process.process</pd:name>
     <pd:startName>Start</pd:startName>
-    <pd:startX>88</pd:startX>
-    <pd:startY>113</pd:startY>
+    <pd:startX>61</pd:startX>
+    <pd:startY>116</pd:startY>
     <pd:returnBindings/>
     <pd:endName>End</pd:endName>
     <pd:endX>521</pd:endX>
@@ -14,7 +14,7 @@
     <pd:activity name="JDBC Update">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>346</pd:x>
+        <pd:x>356</pd:x>
         <pd:y>120</pd:y>
         <config>
             <timeout>10</timeout>
@@ -47,8 +47,8 @@
     <pd:activity name="GetVariable">
         <pd:type>com.tibco.pe.core.GetSharedVariableActivity</pd:type>
         <pd:resourceType>ae.activities.getSharedVariable</pd:resourceType>
-        <pd:x>205</pd:x>
-        <pd:y>117</pd:y>
+        <pd:x>227</pd:x>
+        <pd:y>120</pd:y>
         <config>
             <variableConfig>/Processes/SFTP GET &amp; PUT Files Simulator/Shared-Variable-1.sharedvariable</variableConfig>
         </config>

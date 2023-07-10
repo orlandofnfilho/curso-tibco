@@ -54,12 +54,13 @@
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
         <pd:x>381</pd:x>
-        <pd:y>78</pd:y>
+        <pd:y>77</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
             <NullforEmptyvalues>true</NullforEmptyvalues>
             <ValidateIntputEnable>true</ValidateIntputEnable>
+            <removeRootElementForInput>true</removeRootElementForInput>
             <ActivityInputEditor ref="pfx:Users"/>
         </config>
         <pd:inputBindings>

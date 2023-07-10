@@ -66,6 +66,14 @@
 			<modTime>1687203065332</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>LogLevel</name>
+			<value>1</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1689008628355</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>RemoteRvDaemon</name>
 			<value></value>
 			<deploymentSettable>true</deploymentSettable>
