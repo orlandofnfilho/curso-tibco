@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>SPEEDTEST</name>
+    <resourceType>ae.shared.FTPuserChannel</resourceType>
+    <config>
+        <Timeout>60000</Timeout>
+        <Port>21</Port>
+        <Encoding>Cp1252</Encoding>
+        <FireWall>false</FireWall>
+        <Mode>Passive</Mode>
+        <Host>speedtest.tele2.net</Host>
+        <UserName>anonymous</UserName>
+        <Password>#!rK6q3d0xl3B1BPh5R5bqLKyg1mXLFyA0l1PRLjWdiyc=</Password>
+    </config>
+</BWSharedResource>

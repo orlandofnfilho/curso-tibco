@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file">
+    <pd:name>Processes/FTP Test/Process Definition.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>45</pd:startX>
+    <pd:startY>87</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>1036</pd:endX>
+    <pd:endY>87</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <LocalFileName>
+            <xsd:element name="LocalFileName" type="xsd:string"/>
+        </LocalFileName>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1689072123456</pd:targetNamespace>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>227</pd:x>
+        <pd:y>53</pd:y>
+        <pd:width>160</pd:width>
+        <pd:height>156</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$FTP-Dir/Output/DirectoryItems</pd:over>
+            <pd:iterationElementSlot>currentItem</pd:iterationElementSlot>
+            <pd:indexSlot>idx</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Log</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Log</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Log">
+            <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+            <pd:resourceType>ae.activities.log</pd:resourceType>
+            <pd:x>304</pd:x>
+            <pd:y>128</pd:y>
+            <config>
+                <role>User</role>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$currentItem/DirectoryItems"/>
+                    </message>
+                </ns:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>669</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <variableName>LocalFileName</variableName>
+        </config>
+        <pd:inputBindings>
+            <LocalFileName>
+                <xsl:value-of select="$FTP-Get/FTPGetOutputFile/FileTransferred[1]/Name"/>
+            </LocalFileName>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="FTP Dir">
+        <pd:type>com.tibco.plugin.ftp.FTPDirActivity</pd:type>
+        <pd:resourceType>ae.activities.FTPDirActivityUI</pd:resourceType>
+        <pd:x>148</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <SharedUserData>/Processes/FTP Test/LocalHost FileZilla.sharedftp</SharedUserData>
+        </config>
+        <pd:inputBindings>
+            <Input>
+                <Host>
+                    <xsl:value-of select="'localhost'"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="21"/>
+                </Port>
+                <UserName>
+                    <xsl:value-of select="'user'"/>
+                </UserName>
+                <Password>
+                    <xsl:value-of select="'root'"/>
+                </Password>
+                <Directory>
+                    <xsl:value-of select="'Downloads/Students'"/>
+                </Directory>
+            </Input>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="FTP Get">
+        <pd:type>com.tibco.plugin.ftp.FTPGetActivity</pd:type>
+        <pd:resourceType>ae.activities.FTPGetActivityUI</pd:resourceType>
+        <pd:x>462</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <Timeout>120000</Timeout>
+            <isBinary>false</isBinary>
+            <Overwrite>true</Overwrite>
+            <useProcessData>false</useProcessData>
+            <SharedUserData>/Processes/FTP Test/LocalHost FileZilla.sharedftp</SharedUserData>
+        </config>
+        <pd:inputBindings>
+            <FTPGetInputDataFile>
+                <RemoteFileName>
+                    <xsl:value-of select="'Downloads/Students/Students2.xml'"/>
+                </RemoteFileName>
+                <LocalFileName>
+                    <xsl:value-of select="'E:\Downloads\Students2.xml'"/>
+                </LocalFileName>
+                <Host>
+                    <xsl:value-of select="'localhost'"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="'21'"/>
+                </Port>
+                <UserName>
+                    <xsl:value-of select="'user'"/>
+                </UserName>
+                <Password>
+                    <xsl:value-of select="'root'"/>
+                </Password>
+            </FTPGetInputDataFile>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="FTP Put">
+        <pd:type>com.tibco.plugin.ftp.FTPPutActivity</pd:type>
+        <pd:resourceType>ae.activities.FTPPutActivityUI</pd:resourceType>
+        <pd:x>890</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <Timeout>120000</Timeout>
+            <FireWall>false</FireWall>
+            <isBinary>false</isBinary>
+            <Append>false</Append>
+            <useProcessData>false</useProcessData>
+            <Overwrite>true</Overwrite>
+            <SharedUserData>/Processes/FTP Test/LocalHost FileZilla.sharedftp</SharedUserData>
+        </config>
+        <pd:inputBindings>
+            <FTPPutInputDataFile>
+                <RemoteFileName>
+                    <xsl:value-of select="'Downloads\Students3.xml'"/>
+                </RemoteFileName>
+                <LocalFileName>
+                    <xsl:value-of select="'E:\Downloads\Students3.xml'"/>
+                </LocalFileName>
+                <Host>
+                    <xsl:value-of select="'localhost'"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="21"/>
+                </Port>
+                <UserName>
+                    <xsl:value-of select="'user'"/>
+                </UserName>
+                <Password>
+                    <xsl:value-of select="'root'"/>
+                </Password>
+            </FTPPutInputDataFile>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log-1">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>574</pd:x>
+        <pd:y>87</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$FTP-Get/FTPGetOutputFile/FileTransferred[1]/Name"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Rename File">
+        <pd:type>com.tibco.plugin.file.FileRenameActivity</pd:type>
+        <pd:resourceType>ae.activities.FileRenameActivity</pd:resourceType>
+        <pd:x>773</pd:x>
+        <pd:y>88</pd:y>
+        <config>
+            <overwrite>true</overwrite>
+        </config>
+        <pd:inputBindings>
+            <ns2:RenameActivityConfig>
+                <fromFileName>
+                    <xsl:value-of select="'E:\Downloads\Students2.xml'"/>
+                </fromFileName>
+                <toFileName>
+                    <xsl:value-of select="'E:\Downloads\Students3.xml'"/>
+                </toFileName>
+            </ns2:RenameActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>FTP Dir</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log-1</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FTP Get</pd:from>
+        <pd:to>Log-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FTP Dir</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>FTP Get</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Rename File</pd:from>
+        <pd:to>FTP Put</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Rename File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>FTP Put</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

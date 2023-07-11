@@ -71,9 +71,10 @@
         <pd:y>48</pd:y>
         <pd:width>395</pd:width>
         <pd:height>175</pd:height>
-        <pd:collapsedWidth>52</pd:collapsedWidth>
-        <pd:collapsedHeight>69</pd:collapsedHeight>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
         <config>
             <pd:groupType>inputLoop</pd:groupType>
             <pd:serializable>false</pd:serializable>
@@ -102,8 +103,8 @@
         <pd:activity name="JDBC Update">
             <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
             <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-            <pd:x>614</pd:x>
-            <pd:y>145</pd:y>
+            <pd:x>490</pd:x>
+            <pd:y>138</pd:y>
             <config>
                 <timeout>10</timeout>
                 <commit>false</commit>
