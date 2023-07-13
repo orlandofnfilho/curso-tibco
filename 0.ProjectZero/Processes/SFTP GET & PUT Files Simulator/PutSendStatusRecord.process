@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <pd:name>Processes/SFTP GET &amp; PUT Files Simulator/PutSendStatusRecord.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>43</pd:startX>
+    <pd:startY>117</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>521</pd:endX>
+    <pd:endY>118</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1688739916448</pd:targetNamespace>
+</pd:ProcessDefinition>
