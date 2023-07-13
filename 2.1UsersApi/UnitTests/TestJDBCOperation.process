@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>UnitTests/TestJDBCOperation.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startX>84</pd:startX>
+    <pd:startY>71</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>477</pd:endX>
+    <pd:endY>70</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1689258055081</pd:targetNamespace>
+    <pd:activity name="JDBC Update">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>296</pd:x>
+        <pd:y>118</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <statement>INSERT INTO users (name, status, data)
+VALUES (?,?,?);</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>name</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>status</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>data</parameterName>
+                    <dataType>TIMESTAMP</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <name>
+                    <xsl:value-of select="'ZZZZZZZZZZZZZZZZZZZZ'"/>
+                </name>
+                <status>
+                    <xsl:value-of select="'ZZZZZZZZZZZZZZZZ'"/>
+                </status>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($Java-Code/javaCodeActivityOutput/dateTime)">
+                            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/dateTime"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>188</pd:x>
+        <pd:y>117</pd:y>
+        <config>
+            <fileName>ProcessDefinitionJavaCode</fileName>
+            <packageName>Processes.ProcessDefinition</packageName>
+            <fullsource>package Processes.ProcessDefinition;
+import java.util.*;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+public class ProcessDefinitionJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String dataString = "";
+	protected Date dateTime = null;
+	public String getdataString() {
+		return dataString;
+	}
+	public void setdataString(String val) {
+		dataString = val;
+	}
+	public Date getdateTime() {
+		return dateTime;
+	}
+	public void setdateTime(Date val) {
+		dateTime = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ProcessDefinitionJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String dataString
+	Out : Date dateTime
+* Available Variables: DO NOT MODIFY *****/
+SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+Date dataParse = sdf.parse(dataString);
+SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+Date novaData = sdf2.parse(sdf2.format(dataParse));
+setdateTime(novaData);
+	}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>dataString</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>dateTime</fieldName>
+                    <fieldType>dateTime</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>ProcessDefinitionJavaCode</name>
+                    <byteCode>yv66vgAAADQANQkADAAjCQAMACQKAA0AJQgAJgcAJwgAKAoABQApCgAFACoIACsKAAUALAoADAAtBwAuBwAvAQAKZGF0YVN0cmluZwEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACGRhdGVUaW1lAQAQTGphdmEvdXRpbC9EYXRlOwEADWdldGRhdGFTdHJpbmcBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAA1zZXRkYXRhU3RyaW5nAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQALZ2V0ZGF0ZVRpbWUBABIoKUxqYXZhL3V0aWwvRGF0ZTsBAAtzZXRkYXRlVGltZQEAEyhMamF2YS91dGlsL0RhdGU7KVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwAwAQAKU291cmNlRmlsZQEAHlByb2Nlc3NEZWZpbml0aW9uSmF2YUNvZGUuamF2YQwADgAPDAAQABEMABwAHQEAAAEAGmphdmEvdGV4dC9TaW1wbGVEYXRlRm9ybWF0AQATZGQvTU0veXl5eSBISDptbTpzcwwAHAAXDAAxADIBABN5eXl5LU1NLWRkIEhIOm1tOnNzDAAzADQMABoAGwEANVByb2Nlc3Nlcy9Qcm9jZXNzRGVmaW5pdGlvbi9Qcm9jZXNzRGVmaW5pdGlvbkphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BAAVwYXJzZQEAJChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvdXRpbC9EYXRlOwEABmZvcm1hdAEAJChMamF2YS91dGlsL0RhdGU7KUxqYXZhL2xhbmcvU3RyaW5nOwAhAAwADQAAAAIABAAOAA8AAAAEABAAEQAAAAYAAQASABMAAQAUAAAAHQABAAEAAAAFKrQAAbAAAAABABUAAAAGAAEAAAALAAEAFgAXAAEAFAAAACIAAgACAAAABiortQABsQAAAAEAFQAAAAoAAgAAAA4ABQAPAAEAGAAZAAEAFAAAAB0AAQABAAAABSq0AAKwAAAAAQAVAAAABgABAAAAEQABABoAGwABABQAAAAiAAIAAgAAAAYqK7UAArEAAAABABUAAAAKAAIAAAAUAAUAFQABABwAHQABABQAAAA0AAIAAQAAABAqtwADKhIEtQABKgG1AAKxAAAAAQAVAAAAEgAEAAAAFwAEAAgACgAJAA8AGAABAB4AHQACABQAAABbAAMABQAAAC+7AAVZEga3AAdMKyq0AAG2AAhNuwAFWRIJtwAHTi0tLLYACrYACDoEKhkEtgALsQAAAAEAFQAAABoABgAAAB4ACgAfABMAIAAdACEAKAAiAC4AIwAfAAAABAABACAAAQAhAAAAAgAi</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <dataString>
+                    <xsl:value-of select="&quot;13/08/2023 14:30:00&quot;"/>
+                </dataString>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Update</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>JDBC Update</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

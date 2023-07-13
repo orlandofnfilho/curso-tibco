@@ -52,7 +52,7 @@
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
         <pd:x>304</pd:x>
-        <pd:y>58</pd:y>
+        <pd:y>57</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
             <RestService>

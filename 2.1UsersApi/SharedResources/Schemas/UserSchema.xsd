@@ -11,10 +11,12 @@
 				<xs:element ref="UserSchema:id" minOccurs="0"/>
 				<xs:element ref="UserSchema:name"/>
 				<xs:element ref="UserSchema:status"/>
+				<xs:element ref="UserSchema:data"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="id" type="xs:string"/>
 	<xs:element name="name" type="xs:string"/>
 	<xs:element name="status" type="xs:string"/>
+	<xs:element name="data" type="xs:string"/>
 </xs:schema>

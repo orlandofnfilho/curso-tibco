@@ -33,15 +33,15 @@
     <pd:activity name="JDBC Update">
         <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>382</pd:x>
-        <pd:y>86</pd:y>
+        <pd:x>387</pd:x>
+        <pd:y>85</pd:y>
         <config>
             <timeout>10</timeout>
             <commit>false</commit>
             <emptyStrAsNil>false</emptyStrAsNil>
             <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
             <statement>UPDATE users 
-SET name =?, status=?
+SET name =?, status=?, data=?
 WHERE id=?</statement>
             <Prepared_Param_DataType>
                 <parameter>
@@ -51,6 +51,10 @@ WHERE id=?</statement>
                 <parameter>
                     <parameterName>status</parameterName>
                     <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>data</parameterName>
+                    <dataType>TIMESTAMP</dataType>
                 </parameter>
                 <parameter>
                     <parameterName>id</parameterName>
@@ -66,6 +70,16 @@ WHERE id=?</statement>
                 <status>
                     <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:status"/>
                 </status>
+                <data>
+                    <xsl:choose>
+                        <xsl:when test="exists($Java-Code/javaCodeActivityOutput/dateTime)">
+                            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/dateTime"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </data>
                 <id>
                     <xsl:value-of select="$Start/PostData/id"/>
                 </id>
@@ -75,8 +89,8 @@ WHERE id=?</statement>
     <pd:activity name="Render JSON">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>521</pd:x>
-        <pd:y>88</pd:y>
+        <pd:x>519</pd:x>
+        <pd:y>87</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -109,8 +123,8 @@ WHERE id=?</statement>
     <pd:activity name="Parse JSON">
         <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
         <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
-        <pd:x>223</pd:x>
-        <pd:y>87</pd:y>
+        <pd:x>183</pd:x>
+        <pd:y>90</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -123,6 +137,80 @@ WHERE id=?</statement>
                     <xsl:value-of select="$Start/PostData/UpdateUser"/>
                 </jsonString>
             </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>279</pd:x>
+        <pd:y>84</pd:y>
+        <config>
+            <fileName>UpdateUserImplJavaCode</fileName>
+            <packageName>Processes.UpdateUserImpl</packageName>
+            <fullsource>package Processes.UpdateUserImpl;
+import java.util.*;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+public class UpdateUserImplJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String dataString = "";
+	protected Date dateTime = null;
+	public String getdataString() {
+		return dataString;
+	}
+	public void setdataString(String val) {
+		dataString = val;
+	}
+	public Date getdateTime() {
+		return dateTime;
+	}
+	public void setdateTime(Date val) {
+		dateTime = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public UpdateUserImplJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String dataString
+	Out : Date dateTime
+* Available Variables: DO NOT MODIFY *****/
+SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+Date dataParse = sdf.parse(dataString);
+SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+Date novaData = sdf2.parse(sdf2.format(dataParse));
+setdateTime(novaData);
+	}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>dataString</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>dateTime</fieldName>
+                    <fieldType>dateTime</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>UpdateUserImplJavaCode</name>
+                    <byteCode>yv66vgAAADQANQkADAAjCQAMACQKAA0AJQgAJgcAJwgAKAoABQApCgAFACoIACsKAAUALAoADAAtBwAuBwAvAQAKZGF0YVN0cmluZwEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACGRhdGVUaW1lAQAQTGphdmEvdXRpbC9EYXRlOwEADWdldGRhdGFTdHJpbmcBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAA1zZXRkYXRhU3RyaW5nAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQALZ2V0ZGF0ZVRpbWUBABIoKUxqYXZhL3V0aWwvRGF0ZTsBAAtzZXRkYXRlVGltZQEAEyhMamF2YS91dGlsL0RhdGU7KVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwAwAQAKU291cmNlRmlsZQEAG1VwZGF0ZVVzZXJJbXBsSmF2YUNvZGUuamF2YQwADgAPDAAQABEMABwAHQEAAAEAGmphdmEvdGV4dC9TaW1wbGVEYXRlRm9ybWF0AQATZGQvTU0veXl5eSBISDptbTpzcwwAHAAXDAAxADIBABN5eXl5LU1NLWRkIEhIOm1tOnNzDAAzADQMABoAGwEAL1Byb2Nlc3Nlcy9VcGRhdGVVc2VySW1wbC9VcGRhdGVVc2VySW1wbEphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BAAVwYXJzZQEAJChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvdXRpbC9EYXRlOwEABmZvcm1hdAEAJChMamF2YS91dGlsL0RhdGU7KUxqYXZhL2xhbmcvU3RyaW5nOwAhAAwADQAAAAIABAAOAA8AAAAEABAAEQAAAAYAAQASABMAAQAUAAAAHQABAAEAAAAFKrQAAbAAAAABABUAAAAGAAEAAAALAAEAFgAXAAEAFAAAACIAAgACAAAABiortQABsQAAAAEAFQAAAAoAAgAAAA4ABQAPAAEAGAAZAAEAFAAAAB0AAQABAAAABSq0AAKwAAAAAQAVAAAABgABAAAAEQABABoAGwABABQAAAAiAAIAAgAAAAYqK7UAArEAAAABABUAAAAKAAIAAAAUAAUAFQABABwAHQABABQAAAA0AAIAAQAAABAqtwADKhIEtQABKgG1AAKxAAAAAQAVAAAAEgAEAAAAFwAEAAgACgAJAA8AGAABAB4AHQACABQAAABbAAMABQAAAC+7AAVZEga3AAdMKyq0AAG2AAhNuwAFWRIJtwAHTi0tLLYACrYACDoEKhkEtgALsQAAAAEAFQAAABoABgAAAB4ACgAfABMAIAAdACEAKAAiAC4AIwAfAAAABAABACAAAQAhAAAAAgAi</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <dataString>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:data"/>
+                </dataString>
+            </javaCodeActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -148,6 +236,13 @@ WHERE id=?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>Parse JSON</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
         <pd:to>JDBC Update</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
