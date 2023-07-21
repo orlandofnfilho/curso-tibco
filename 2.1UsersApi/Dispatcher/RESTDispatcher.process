@@ -131,8 +131,8 @@
                                                 </id>
                                             </xsl:template>
                                         </Input-Binding>
-                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
-                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
                                                 <RESTResponse>
                                                     <xsl:if test="$End/ResponseData">
                                                         <asciiContent>
@@ -140,13 +140,21 @@
                                                         </asciiContent>
                                                     </xsl:if>
                                                     <Headers>
-                                                        <xsl:if test="string-length($Render-JSON-1/ns:ActivityOutputClass/jsonString) > 0">
-                                                            <StatusLine>
-                                                                <xsl:value-of select="'HTTP/2 404'"/>
-                                                            </StatusLine>
-                                                        </xsl:if>
+                                                        <xsl:choose>
+                                                            <xsl:when test="string-length($RenderNotFoundException/ns:ActivityOutputClass/jsonString) > 0">
+                                                                <StatusLine>
+                                                                    <xsl:value-of select="'HTTP/1.1 404'"/>
+                                                                </StatusLine>
+                                                            </xsl:when>
+                                                            <xsl:when test="string-length($Render-JSON-1/ns:ActivityOutputClass/jsonString) > 0">
+                                                                <StatusLine>
+                                                                    <xsl:value-of select="'HTTP/1.1 500'"/>
+                                                                </StatusLine>
+                                                            </xsl:when>
+                                                            <xsl:otherwise/>
+                                                        </xsl:choose>
                                                         <Content-Type>
-                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                            <xsl:value-of select="'application/json'"/>
                                                         </Content-Type>
                                                     </Headers>
                                                 </RESTResponse>

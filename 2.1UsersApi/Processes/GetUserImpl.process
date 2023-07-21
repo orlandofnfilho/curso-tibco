@@ -10,14 +10,19 @@
     <pd:startY>83</pd:startY>
     <pd:returnBindings>
         <xsl:choose>
-            <xsl:when test="string-length($Render-JSON-1/ns:ActivityOutputClass/jsonString) > 0">
+            <xsl:when test="string-length($RenderUsuario/ns:ActivityOutputClass/jsonString) > 0">
                 <ResponseData>
-                    <xsl:value-of select="$Render-JSON-1/ns:ActivityOutputClass/jsonString"/>
+                    <xsl:value-of select="$RenderUsuario/ns:ActivityOutputClass/jsonString"/>
+                </ResponseData>
+            </xsl:when>
+            <xsl:when test="string-length($RenderNotFoundException/ns:ActivityOutputClass/jsonString) > 0">
+                <ResponseData>
+                    <xsl:value-of select="$RenderNotFoundException/ns:ActivityOutputClass/jsonString"/>
                 </ResponseData>
             </xsl:when>
             <xsl:otherwise>
                 <ResponseData>
-                    <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+                    <xsl:value-of select="$Render-JSON-1/ns:ActivityOutputClass/jsonString"/>
                 </ResponseData>
             </xsl:otherwise>
         </xsl:choose>
@@ -26,7 +31,7 @@
     <pd:endType>
         <xsd:element name="ResponseData" type="xsd:string"/>
     </pd:endType>
-    <pd:endX>489</pd:endX>
+    <pd:endX>492</pd:endX>
     <pd:endY>85</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
@@ -78,11 +83,11 @@ WHERE id = ?</statement>
             </jdbcQueryActivityInput>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Render JSON">
+    <pd:activity name="RenderUsuario">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>344</pd:x>
-        <pd:y>84</pd:y>
+        <pd:x>373</pd:x>
+        <pd:y>83</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -92,30 +97,30 @@ WHERE id = ?</statement>
         </config>
         <pd:inputBindings>
             <ns:ActivityInputClass>
-                <pfx:User>
-                    <xsl:if test="$JDBC-Query/resultSet/Record[1]/id">
+                <xsl:for-each select="$JDBC-Query/resultSet/Record">
+                    <pfx:User>
                         <pfx:id>
-                            <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/id"/>
+                            <xsl:value-of select="id"/>
                         </pfx:id>
-                    </xsl:if>
-                    <pfx:name>
-                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/name"/>
-                    </pfx:name>
-                    <pfx:status>
-                        <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/status"/>
-                    </pfx:status>
-                    <pfx:data>
-                        <xsl:value-of select="tib:format-dateTime('dd/mm/yyyy hh:mm:ss', $JDBC-Query/resultSet/Record/data)"/>
-                    </pfx:data>
-                </pfx:User>
+                        <pfx:name>
+                            <xsl:value-of select="name"/>
+                        </pfx:name>
+                        <pfx:status>
+                            <xsl:value-of select="status"/>
+                        </pfx:status>
+                        <pfx:data>
+                            <xsl:value-of select="data"/>
+                        </pfx:data>
+                    </pfx:User>
+                </xsl:for-each>
             </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>305</pd:x>
-        <pd:y>241</pd:y>
+        <pd:x>797</pd:x>
+        <pd:y>221</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -125,8 +130,8 @@ WHERE id = ?</statement>
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>397</pd:x>
-        <pd:y>238</pd:y>
+        <pd:x>635</pd:x>
+        <pd:y>217</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -146,8 +151,8 @@ WHERE id = ?</statement>
     <pd:activity name="Generate Error">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>197</pd:x>
-        <pd:y>192</pd:y>
+        <pd:x>98</pd:x>
+        <pd:y>236</pd:y>
         <config>
             <faultName/>
         </config>
@@ -165,8 +170,8 @@ WHERE id = ?</statement>
     <pd:activity name="Render-JSON-1">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>486</pd:x>
-        <pd:y>233</pd:y>
+        <pd:x>632</pd:x>
+        <pd:y>84</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -178,6 +183,7 @@ WHERE id = ?</statement>
                         <xsd:sequence>
                             <xsd:element name="msg" type="xsd:string"/>
                             <xsd:element name="status" type="xsd:string"/>
+                            <xsd:element name="timestamp" type="xsd:time"/>
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
@@ -187,12 +193,69 @@ WHERE id = ?</statement>
             <ns:ActivityInputClass>
                 <Error>
                     <msg>
-                        <xsl:value-of select="'Usuario não encontrado'"/>
+                        <xsl:value-of select="'Erro Interno'"/>
                     </msg>
+                    <status>
+                        <xsl:value-of select="'500'"/>
+                    </status>
+                    <timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </timestamp>
+                </Error>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LogNotFoundException">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>252</pd:x>
+        <pd:y>243</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat('Usuario não encontrado: ', $Start/id)"/>
+                </message>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="RenderNotFoundException">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>425</pd:x>
+        <pd:y>242</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="UsuarioNotFoundException">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="message" type="xsd:string"/>
+                            <xsd:element name="timestamp" type="xsd:string"/>
+                            <xsd:element name="status" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <UsuarioNotFoundException>
+                    <message>
+                        <xsl:value-of select="concat('Usuario não encontrado: ', $Start/id)"/>
+                    </message>
+                    <timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </timestamp>
                     <status>
                         <xsl:value-of select="'404'"/>
                     </status>
-                </Error>
+                </UsuarioNotFoundException>
             </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
@@ -205,14 +268,13 @@ WHERE id = ?</statement>
     </pd:transition>
     <pd:transition>
         <pd:from>JDBC Query</pd:from>
-        <pd:to>Render JSON</pd:to>
+        <pd:to>RenderUsuario</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>string-length($JDBC-Query/resultSet/Record) &gt; 0</pd:xpath>
+        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Render JSON</pd:from>
+        <pd:from>RenderUsuario</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -237,10 +299,32 @@ WHERE id = ?</statement>
         <pd:to>Generate Error</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>otherwise</pd:conditionType>
+        <pd:conditionType>error</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Render-JSON-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query</pd:from>
+        <pd:to>LogNotFoundException</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($JDBC-Query/resultSet/Record) = 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogNotFoundException</pd:from>
+        <pd:to>RenderNotFoundException</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RenderNotFoundException</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

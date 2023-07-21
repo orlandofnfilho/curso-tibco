@@ -18,11 +18,11 @@
             <AESDK:defaultMicroAgentSession>ADBHawkDefault</AESDK:defaultMicroAgentSession>
             <AESDK:startComponent>
                 <AESDK:state>active</AESDK:state>
-                <AESDK:name>ADBRvSession</AESDK:name>
+                <AESDK:name>ADBAgentRvSession</AESDK:name>
             </AESDK:startComponent>
             <AESDK:startComponent>
                 <AESDK:state>active</AESDK:state>
-                <AESDK:name>ADBAgentRvSession</AESDK:name>
+                <AESDK:name>adbActiveDatabaseAdapterConfigurationrvcmRvCmSession</AESDK:name>
             </AESDK:startComponent>
             <AESDK:startComponent>
                 <AESDK:state>active</AESDK:state>
@@ -34,14 +34,13 @@
             <AESDK:sessions>
                 <AESDK:messaging>
                     <AESDK:rvSession isRef="true">#rvSession.ADBHawkDefault</AESDK:rvSession>
-                    <AESDK:rvSession isRef="true">#rvSession.ADBRvSession</AESDK:rvSession>
                     <AESDK:rvSession isRef="true">#rvSession.ADBAgentRvSession</AESDK:rvSession>
+                    <AESDK:rvCmSession isRef="true">#rvCmSession.adbActiveDatabaseAdapterConfigurationrvcmRvCmSession</AESDK:rvCmSession>
                 </AESDK:messaging>
             </AESDK:sessions>
             <AESDK:producers>
-                <AESDK:rvPublisher isRef="true">#producer.ADBPublisher</AESDK:rvPublisher>
+                <AESDK:rvCmPublisher isRef="true">#producer.ADBPublisher</AESDK:rvCmPublisher>
             </AESDK:producers>
-            <AESDK:consumers xsi:nil="true"/>
         </AESDK:deployment>
         <AESDK:timers xsi:nil="true"/>
         <AESDK:txControls xsi:nil="true"/>
@@ -454,15 +453,15 @@
                     <AESDK:properties>name,loadURL</AESDK:properties>
                 </AESDK:locked>
                 <AESDK:locked>
-                    <AESDK:resource>/Advanced/Sessions/ADBAgentRvSession</AESDK:resource>
+                    <AESDK:resource>/Advanced/Sessions/adbActiveDatabaseAdapterConfigurationrvcmRvCmSession</AESDK:resource>
                     <AESDK:properties>name</AESDK:properties>
                 </AESDK:locked>
                 <AESDK:locked>
-                    <AESDK:resource>/Advanced/Sessions/ADBAgentRvSession/ADBPublisher</AESDK:resource>
+                    <AESDK:resource>/Advanced/Sessions/adbActiveDatabaseAdapterConfigurationrvcmRvCmSession/ADBPublisher</AESDK:resource>
                     <AESDK:properties>replySubject,subject,name,wireFormat</AESDK:properties>
                 </AESDK:locked>
                 <AESDK:locked>
-                    <AESDK:resource>/Advanced/Sessions/ADBRvSession</AESDK:resource>
+                    <AESDK:resource>/Advanced/Sessions/ADBAgentRvSession</AESDK:resource>
                     <AESDK:properties>name</AESDK:properties>
                 </AESDK:locked>
                 <AESDK:locked>
@@ -481,20 +480,20 @@
                 </AESDK:fixed>
                 <AESDK:fixed>
                     <AESDK:resource>/Advanced/Sessions</AESDK:resource>
-                    <AESDK:children>ADBHawkDefault,ADBRvSession,ADBAgentRvSession</AESDK:children>
+                    <AESDK:children>ADBHawkDefault,ADBAgentRvSession,adbActiveDatabaseAdapterConfigurationrvcmRvCmSession</AESDK:children>
                 </AESDK:fixed>
                 <AESDK:fixed>
-                    <AESDK:resource>/Advanced/Sessions/ADBAgentRvSession</AESDK:resource>
+                    <AESDK:resource>/Advanced/Sessions/adbActiveDatabaseAdapterConfigurationrvcmRvCmSession</AESDK:resource>
                     <AESDK:children>ADBPublisher</AESDK:children>
                 </AESDK:fixed>
                 <AESDK:fixed>
-                    <AESDK:resource>/Advanced/Sessions/ADBAgentRvSession/ADBPublisher</AESDK:resource>
+                    <AESDK:resource>/Advanced/Sessions/adbActiveDatabaseAdapterConfigurationrvcmRvCmSession/ADBPublisher</AESDK:resource>
                     <AESDK:children>P_Student</AESDK:children>
                 </AESDK:fixed>
             </AESDK:fixedChildren>
             <AESDK:resourceDescriptions>
                 <AESDK:node>
-                    <AESDK:resource>/Advanced/Sessions/ADBAgentRvSession/ADBPublisher</AESDK:resource>
+                    <AESDK:resource>/Advanced/Sessions/adbActiveDatabaseAdapterConfigurationrvcmRvCmSession/ADBPublisher</AESDK:resource>
                     <AESDK:description>Created for service ADBPublisher.</AESDK:description>
                 </AESDK:node>
             </AESDK:resourceDescriptions>
@@ -509,7 +508,7 @@
             <ADB:publisher xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002" resourceType="adb.table.publisher">
                 <ADB:deployed>true</ADB:deployed>
                 <ADB:transportType>rv</ADB:transportType>
-                <ADB:qualityOfService>ae.sessions.rvsession</ADB:qualityOfService>
+                <ADB:qualityOfService>ae.sessions.rvcmsession</ADB:qualityOfService>
                 <ADB:wireFormat>aeRvMsg</ADB:wireFormat>
                 <ADB:isAdorapps>false</ADB:isAdorapps>
                 <ADB:allowKeys>true</ADB:allowKeys>
@@ -525,7 +524,7 @@
                 <ADB:pollingMethod>Timer</ADB:pollingMethod>
                 <ADB:pollingInterval>5000</ADB:pollingInterval>
                 <ADB:usePollingBatchSize>true</ADB:usePollingBatchSize>
-                <ADB:batchPubStatusUpdates>on</ADB:batchPubStatusUpdates>
+                <ADB:batchPubStatusUpdates>off</ADB:batchPubStatusUpdates>
                 <ADB:pubBatchConfirmSize>0</ADB:pubBatchConfirmSize>
                 <ADB:pubBatchConfirmTimeout>10000</ADB:pubBatchConfirmTimeout>
                 <ADB:maxRows>1000</ADB:maxRows>
@@ -537,39 +536,39 @@
                 <ADB:name>ADBPublisher</ADB:name>
                 <ADB:monitorFromOraStreamsNew>false</ADB:monitorFromOraStreamsNew>
                 <ADB:monitorFromOraStreams>false</ADB:monitorFromOraStreams>
-                <ADB:repoEndpointType>endpoint.RVPublisher</ADB:repoEndpointType>
-                <ADB:sessionReference>/Resources/Connections/Folder/ActiveDatabaseAdapterConfiguration.adb#rvSession.ADBAgentRvSession</ADB:sessionReference>
-                <ADB:isMigrating>false</ADB:isMigrating>
                 <ADB:publishingTable>P_Student</ADB:publishingTable>
                 <ADB:classReference isRef="true">/AESchemas/ae/ADB/ActiveDatabaseAdapterConfiguration.aeschema#class.P_Student</ADB:classReference>
-                <ADB:sourceTable>dbo.Student</ADB:sourceTable>
+                <ADB:sourceTable>Student</ADB:sourceTable>
                 <ADB:columnsToPublish>StudentID</ADB:columnsToPublish>
                 <ADB:columnsToPublish>Nome</ADB:columnsToPublish>
                 <ADB:columnsToPublish>Age</ADB:columnsToPublish>
+                <ADB:columnsToPublish>data</ADB:columnsToPublish>
                 <ADB:schemas xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002">
                     <ADB:table xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002">
                         <ADB:name>P_Student</ADB:name>
                     </ADB:table>
                 </ADB:schemas>
                 <ADB:messageSubject>%%Domain%%.%%Deployment%%.adb.ActiveDatabaseAdapterConfiguration.ADBPublisher</ADB:messageSubject>
+                <ADB:repoEndpointType>endpoint.RVCMPublisher</ADB:repoEndpointType>
+                <ADB:sessionReference>/Resources/Connections/Folder/ActiveDatabaseAdapterConfiguration.adb#rvCmSession.adbActiveDatabaseAdapterConfigurationrvcmRvCmSession</ADB:sessionReference>
+                <ADB:preRegisteredListeners/>
+                <ADB:isMigrating>false</ADB:isMigrating>
                 <ADB:endpointReference isRef="true">#producer.ADBPublisher</ADB:endpointReference>
-                <ADB:loopDetection>true</ADB:loopDetection>
-                <ADB:isOldProject>true</ADB:isOldProject>
             </ADB:publisher>
         </ADB:operations>
         <ADB:activedb xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002">
             <ADB:defaultDataSource xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002">
                 <ADB:name/>
-                <ADB:user>sa</ADB:user>
+                <ADB:user>avaliacao</ADB:user>
                 <ADB:driver>tibcosoftwareinc.jdbc.sqlserver.SQLServerDriver</ADB:driver>
                 <ADB:url>jdbc:tibcosoftwareinc:sqlserver://localhost:1433;databaseName=Avaliacao</ADB:url>
-                <ADB:runtimeUser>sa</ADB:runtimeUser>
+                <ADB:runtimeUser>avaliacao</ADB:runtimeUser>
                 <ADB:runtimeUrl>jdbc:tibcosoftwareinc:sqlserver://localhost:1433;databaseName=Avaliacao</ADB:runtimeUrl>
                 <ADB:runtimeDriver>tibcosoftwareinc.jdbc.sqlserver.SQLServerDriver</ADB:runtimeDriver>
                 <ADB:dbmsType>SQLSERVER</ADB:dbmsType>
-                <ADB:password>#!+MbW3Z7DYe2Jm2yAEF79hTjdutckAwg+DpSHldig1/o=</ADB:password>
-                <ADB:runtimePassword>#!X2FL0QZAM9kFnZTLiTAzjTc50LOQWVFJ7GGEyC1ZbQk=</ADB:runtimePassword>
-                <ADB:defaultSchema>Avaliacao</ADB:defaultSchema>
+                <ADB:password>#!RhpBmOwAZ0ydu5uiaObSrNaXyVLoKVPo/FYbVsLu50Q=</ADB:password>
+                <ADB:runtimePassword>#!W1bHc8ZDbXpyhpgT3Tb5b1MUbEvvQN9oFB3PYbDHP2Q=</ADB:runtimePassword>
+                <ADB:defaultSchema>dbo</ADB:defaultSchema>
             </ADB:defaultDataSource>
             <ADB:threadCount xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002">
                 <ADB:commInterfaces>1</ADB:commInterfaces>
@@ -613,17 +612,12 @@
             </ADB:activeSpaces>
         </ADB:activedb>
         <ADB:operations xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002"/>
+        <ADB:operations xmlns:ADB="http://www.tibco.com/xmlns/adapter/ADB/2002"/>
     </ADB:adapter>
     <AEService:rvSession xmlns:AEService="http://www.tibco.com/xmlns/aemeta/services/2002" objectType="session.RV" name="ADBHawkDefault">
         <AEService:daemon>%%TIBHawkDaemon%%</AEService:daemon>
         <AEService:service>%%TIBHawkService%%</AEService:service>
         <AEService:network>%%TIBHawkNetwork%%</AEService:network>
-        <AEService:mode>asynchronous</AEService:mode>
-    </AEService:rvSession>
-    <AEService:rvSession xmlns:AEService="http://www.tibco.com/xmlns/aemeta/services/2002" objectType="session.RV" name="ADBRvSession">
-        <AEService:daemon>%%RvDaemon%%</AEService:daemon>
-        <AEService:service>%%RvService%%</AEService:service>
-        <AEService:network>%%RvNetwork%%</AEService:network>
         <AEService:mode>asynchronous</AEService:mode>
     </AEService:rvSession>
     <AEService:rvSession xmlns:AEService="http://www.tibco.com/xmlns/aemeta/services/2002" objectType="session.RV" name="ADBAgentRvSession">
@@ -632,11 +626,23 @@
         <AEService:network>%%RvNetwork%%</AEService:network>
         <AEService:mode>asynchronous</AEService:mode>
     </AEService:rvSession>
-    <AEService:producer xmlns:AEService="http://www.tibco.com/xmlns/aemeta/services/2002" objectType="endpoint.RVPublisher" name="ADBPublisher">
+    <AEService:rvCmSession xmlns:AEService="http://www.tibco.com/xmlns/aemeta/services/2002" objectType="session.RVCM" name="adbActiveDatabaseAdapterConfigurationrvcmRvCmSession">
+        <AEService:daemon>%%RvDaemon%%</AEService:daemon>
+        <AEService:service>%%RvService%%</AEService:service>
+        <AEService:network>%%RvNetwork%%</AEService:network>
+        <AEService:cmName>%%Domain%%.%%Deployment%%.%%AppName%%.%%InstanceId%%.CM</AEService:cmName>
+        <AEService:relayAgent/>
+        <AEService:ledgerFile>%%DirLedger%%/%%Domain%%.%%Deployment%%.%%AppName%%.%%InstanceId%%.ldg</AEService:ledgerFile>
+        <AEService:syncLedger>true</AEService:syncLedger>
+        <AEService:defaultTimeLimit>0</AEService:defaultTimeLimit>
+        <AEService:requireOldMessages>true</AEService:requireOldMessages>
+        <AEService:mode>asynchronous</AEService:mode>
+    </AEService:rvCmSession>
+    <AEService:producer xmlns:AEService="http://www.tibco.com/xmlns/aemeta/services/2002" objectType="endpoint.RVCMPublisher" name="ADBPublisher">
         <AEService:subject>%%Domain%%.%%Deployment%%.adb.ActiveDatabaseAdapterConfiguration.ADBPublisher</AEService:subject>
         <AEService:wireFormat>aeRvMsg</AEService:wireFormat>
         <AEService:replySubject/>
-        <AEService:session isRef="true">#rvSession.ADBAgentRvSession</AEService:session>
+        <AEService:session isRef="true">#rvCmSession.adbActiveDatabaseAdapterConfigurationrvcmRvCmSession</AEService:session>
         <AEService:class isRef="true">/AESchemas/ae/ADB/ActiveDatabaseAdapterConfiguration.aeschema#class.P_Student</AEService:class>
     </AEService:producer>
 </Repository:repository>

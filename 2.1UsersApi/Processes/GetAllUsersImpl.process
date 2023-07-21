@@ -86,7 +86,7 @@
                                 </pfx:status>
                             </xsl:if>
                             <pfx:data>
-                                <xsl:value-of select="tib:format-dateTime('dd/MM/yyyy HH:mm:ss', current()/data)"/>
+                                <xsl:value-of select="data"/>
                             </pfx:data>
                         </pfx:User>
                     </xsl:for-each>
