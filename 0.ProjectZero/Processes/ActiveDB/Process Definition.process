@@ -51,7 +51,7 @@
         <pd:inputBindings>
             <ns:ActivityInput>
                 <message>
-                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns1:P__Student/Nome"/>
+                    <xsl:value-of select="$Adapter-Subscriber/ProcessStarterOutput/body/ns1:P__Student/StudentID"/>
                 </message>
             </ns:ActivityInput>
         </pd:inputBindings>
