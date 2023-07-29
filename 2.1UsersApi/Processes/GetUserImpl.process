@@ -86,8 +86,8 @@ WHERE id = ?</statement>
     <pd:activity name="RenderUsuario">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>373</pd:x>
-        <pd:y>83</pd:y>
+        <pd:x>374</pd:x>
+        <pd:y>85</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
