@@ -52,7 +52,7 @@
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
         <pd:x>304</pd:x>
-        <pd:y>57</pd:y>
+        <pd:y>53</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
             <RestService>
@@ -192,15 +192,27 @@
                                                 </id>
                                             </xsl:template>
                                         </Input-Binding>
-                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
                                                 <RESTResponse>
-                                                    <xsl:if test="$End/ResponseData">
+                                                    <xsl:if test="$End/Response/message">
                                                         <asciiContent>
-                                                            <xsl:value-of select="$End/ResponseData"/>
+                                                            <xsl:value-of select="$End/Response/message"/>
                                                         </asciiContent>
                                                     </xsl:if>
                                                     <Headers>
+                                                        <xsl:choose>
+                                                            <xsl:when test="$End/Response/statusCode = 404">
+                                                                <StatusLine>
+                                                                    <xsl:value-of select="'HTTP/1.1 404'"/>
+                                                                </StatusLine>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <StatusLine>
+                                                                    <xsl:value-of select="'HTTP/1.1 200'"/>
+                                                                </StatusLine>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
                                                         <Content-Type>
                                                             <xsl:value-of select="&quot;application/json&quot;"/>
                                                         </Content-Type>
