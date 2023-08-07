@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json">
     <pd:name>UnitTests/TestGetUser.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>86</pd:startX>
@@ -14,8 +14,8 @@
     <pd:activity name="Invoke REST API">
         <pd:type>com.tibco.plugin.json.activities.RestActivity</pd:type>
         <pd:resourceType>ae.activities.RestActivity</pd:resourceType>
-        <pd:x>271</pd:x>
-        <pd:y>95</pd:y>
+        <pd:x>215</pd:x>
+        <pd:y>97</pd:y>
         <config>
             <enableProtocolUI>None</enableProtocolUI>
             <restMethodUI>GET</restMethodUI>
@@ -24,7 +24,7 @@
             <WADLPaths/>
             <WADLBaseURL/>
             <restMethodIDUI/>
-            <restURI>http://localhost:8080/api/v1/todolist</restURI>
+            <restURI>http://localhost:8080/users</restURI>
             <restInputReferNode>
                 <xsd:element name="Parameters">
                     <xsd:complexType>
@@ -116,7 +116,29 @@
                 </xsd:element>
             </restOutputReferNode>
         </config>
-        <pd:inputBindings/>
+        <pd:inputBindings>
+            <ns1:ActivityInput>
+                <URI>
+                    <xsl:value-of select="'http://localhost:8080/users'"/>
+                </URI>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>344</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$Invoke-REST-API/ns1:RESTOutput/msg"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
     </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
@@ -127,6 +149,13 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Invoke REST API</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

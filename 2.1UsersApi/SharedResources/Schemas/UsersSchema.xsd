@@ -18,7 +18,7 @@
 				<xs:element ref="UsersSchema:id" minOccurs="0"/>
 				<xs:element ref="UsersSchema:name" minOccurs="0"/>
 				<xs:element ref="UsersSchema:status" minOccurs="0"/>
-				<xs:element ref="UsersSchema:data"/>
+				<xs:element ref="UsersSchema:data" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
