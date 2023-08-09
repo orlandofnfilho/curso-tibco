@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" schemaLocation="/SharedResources/Schemas/StandardError.xsd"/>
     <pd:name>Processes/DeleteUserImpl.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -113,24 +114,29 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>532</pd:x>
-        <pd:y>189</pd:y>
+        <pd:x>523</pd:x>
+        <pd:y>195</pd:y>
         <config>
-            <role>User</role>
+            <role>Error</role>
         </config>
         <pd:inputBindings>
             <pfx:ActivityInput>
                 <message>
                     <xsl:value-of select="$Catch/exceptiondata/*"/>
                 </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
             </pfx:ActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>642</pd:x>
-        <pd:y>194</pd:y>
+        <pd:x>644</pd:x>
+        <pd:y>195</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -141,38 +147,34 @@
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
         <pd:x>239</pd:x>
-        <pd:y>219</pd:y>
+        <pd:y>218</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
             <NullforEmptyvalues>true</NullforEmptyvalues>
-            <ValidateIntputEnable>true</ValidateIntputEnable>
+            <ValidateIntputEnable>false</ValidateIntputEnable>
             <removeRootElementForInput>true</removeRootElementForInput>
-            <ActivityInputEditor>
-                <xsd:element name="Exception">
-                    <xsd:complexType>
-                        <xsd:sequence>
-                            <xsd:element name="error" type="xsd:string"/>
-                            <xsd:element name="message" type="xsd:string"/>
-                            <xsd:element name="timestamp" type="xsd:string"/>
-                        </xsd:sequence>
-                    </xsd:complexType>
-                </xsd:element>
-            </ActivityInputEditor>
+            <ActivityInputEditor ref="pfx2:StandardError"/>
         </config>
         <pd:inputBindings>
             <ns:ActivityInputClass>
-                <Exception>
-                    <error>
-                        <xsl:value-of select="&quot;Resource not found&quot;"/>
-                    </error>
-                    <message>
-                        <xsl:value-of select="concat(&quot;User not found id: &quot;, $Start/id)"/>
-                    </message>
-                    <timestamp>
+                <pfx2:StandardError>
+                    <pfx2:timestamp>
                         <xsl:value-of select="current-dateTime()"/>
-                    </timestamp>
-                </Exception>
+                    </pfx2:timestamp>
+                    <pfx2:status>
+                        <xsl:value-of select="404"/>
+                    </pfx2:status>
+                    <pfx2:error>
+                        <xsl:value-of select="'Resource not found'"/>
+                    </pfx2:error>
+                    <pfx2:message>
+                        <xsl:value-of select="concat('User not found id: ', $Start/id)"/>
+                    </pfx2:message>
+                    <pfx2:path>
+                        <xsl:value-of select="concat('/users?id=', $Start/id)"/>
+                    </pfx2:path>
+                </pfx2:StandardError>
             </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>

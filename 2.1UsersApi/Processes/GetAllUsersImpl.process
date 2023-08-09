@@ -7,18 +7,9 @@
     <pd:startX>97</pd:startX>
     <pd:startY>78</pd:startY>
     <pd:returnBindings>
-        <xsl:choose>
-            <xsl:when test="string-length($Render-JSON/ns:ActivityOutputClass/jsonString) > 0">
-                <Response>
-                    <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
-                </Response>
-            </xsl:when>
-            <xsl:otherwise>
-                <Response>
-                    <xsl:value-of select="$Render-JSON-1/ns:ActivityOutputClass/jsonString"/>
-                </Response>
-            </xsl:otherwise>
-        </xsl:choose>
+        <Response>
+            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </Response>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
     <pd:endType>
@@ -106,28 +97,6 @@
             </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="Render-JSON-1">
-        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
-        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>241</pd:x>
-        <pd:y>228</pd:y>
-        <config>
-            <SchemaType>xsdType</SchemaType>
-            <BadgerfishCheck>false</BadgerfishCheck>
-            <NullforEmptyvalues>true</NullforEmptyvalues>
-            <removeRootElementForInput>false</removeRootElementForInput>
-            <ActivityInputEditor>
-                <xsd:element name="message" type="xsd:string"/>
-            </ActivityInputEditor>
-        </config>
-        <pd:inputBindings>
-            <ns:ActivityInputClass>
-                <message>
-                    <xsl:value-of select="'Sem usuários cadastrados.'"/>
-                </message>
-            </ns:ActivityInputClass>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>JDBC Query</pd:to>
@@ -145,21 +114,6 @@
     <pd:transition>
         <pd:from>JDBC Query</pd:from>
         <pd:to>Render JSON</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>count($JDBC-Query/resultSet/Record) &gt; 0</pd:xpath>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>JDBC Query</pd:from>
-        <pd:to>Render-JSON-1</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>otherwise</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Render-JSON-1</pd:from>
-        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns:StandardError="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2"
+	 targetNamespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="StandardError">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="timestamp" type="xs:string" minOccurs="0"/>
+				<xs:element name="status" type="xs:string" minOccurs="0"/>
+				<xs:element name="error" type="xs:string" minOccurs="0"/>
+				<xs:element name="message" type="xs:string" minOccurs="0"/>
+				<xs:element name="path" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

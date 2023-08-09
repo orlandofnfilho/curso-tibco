@@ -58,7 +58,7 @@
             <RestService>
                 <InnerService>
                     <ns0:application xmlns:ns0="http://wadl.dev.java.net/2009/02" name="UserApplication">
-                        <ns0:resources name="UserService" base="http://localhost:8080">
+                        <ns0:resources name="UserService" base="http://localhost:3333">
                             <ns0:resource id="UserResource" path="users">
                                 <ns0:doc/>
                                 <ns0:method id="AddUser" name="POST">

@@ -209,8 +209,8 @@ WHERE id = ?</statement>
     <pd:activity name="LogNotFoundException">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>284</pd:x>
-        <pd:y>168</pd:y>
+        <pd:x>223</pd:x>
+        <pd:y>228</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -225,8 +225,8 @@ WHERE id = ?</statement>
     <pd:activity name="RenderNotFoundException">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>362</pd:x>
-        <pd:y>188</pd:y>
+        <pd:x>402</pd:x>
+        <pd:y>224</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
