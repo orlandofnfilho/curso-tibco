@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/UserSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" schemaLocation="/SharedResources/Schemas/StandardError.xsd"/>
     <pd:name>Processes/AddUserImpl.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -9,13 +10,39 @@
     <pd:startX>45</pd:startX>
     <pd:startY>106</pd:startY>
     <pd:returnBindings>
-        <ResponseData>
-            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
-        </ResponseData>
+        <xsl:choose>
+            <xsl:when test="string-length($RenderError/ns:ActivityOutputClass/jsonString) > 0">
+                <Response>
+                    <status>
+                        <xsl:value-of select="400"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$RenderError/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:when>
+            <xsl:otherwise>
+                <Response>
+                    <status>
+                        <xsl:value-of select="200"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:otherwise>
+        </xsl:choose>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
     <pd:endType>
-        <xsd:element name="ResponseData" type="xsd:string"/>
+        <xsd:element name="Response">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="status" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
     </pd:endType>
     <pd:endX>624</pd:endX>
     <pd:endY>108</pd:endY>
@@ -125,8 +152,8 @@
     <pd:activity name="Java Code">
         <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
         <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
-        <pd:x>277</pd:x>
-        <pd:y>107</pd:y>
+        <pd:x>268</pd:x>
+        <pd:y>108</pd:y>
         <config>
             <fileName>AddUserImplJavaCode</fileName>
             <packageName>Processes.AddUserImpl</packageName>
@@ -199,8 +226,8 @@ setdateTime(novaData);
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>762</pd:x>
-        <pd:y>115</pd:y>
+        <pd:x>872</pd:x>
+        <pd:y>113</pd:y>
         <config>
             <role>Error</role>
         </config>
@@ -220,13 +247,49 @@ setdateTime(novaData);
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>760</pd:x>
-        <pd:y>223</pd:y>
+        <pd:x>881</pd:x>
+        <pd:y>228</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
         </config>
         <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="RenderError">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>725</pd:x>
+        <pd:y>107</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx3:StandardError"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx3:StandardError>
+                    <pfx3:timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx3:timestamp>
+                    <pfx3:status>
+                        <xsl:value-of select="400"/>
+                    </pfx3:status>
+                    <pfx3:error>
+                        <xsl:value-of select="'Bad Request'"/>
+                    </pfx3:error>
+                    <xsl:if test="$_error/ns1:ErrorReport/Msg">
+                        <pfx3:message>
+                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                        </pfx3:message>
+                    </xsl:if>
+                    <pfx3:path>
+                        <xsl:value-of select="'/users'"/>
+                    </pfx3:path>
+                </pfx3:StandardError>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
     </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
@@ -265,7 +328,7 @@ setdateTime(novaData);
     </pd:transition>
     <pd:transition>
         <pd:from>Log</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>RenderError</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -273,6 +336,13 @@ setdateTime(novaData);
     <pd:transition>
         <pd:from>Catch</pd:from>
         <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RenderError</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

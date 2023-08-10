@@ -10,11 +10,15 @@
             <authorProperty>Orlando</authorProperty>
             <processProperty>/Dispatcher/RESTDispatcher.process</processProperty>
         </processArchive>
-        <versionProperty>1</versionProperty>
+        <versionProperty>2</versionProperty>
         <authorProperty>Orlando</authorProperty>
         <addServiceSettableGvars>true</addServiceSettableGvars>
         <name>2.1UsersApi</name>
-        <designer/>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
         <fileLocationProperty>E:\Projetos\curso-tibco\2.1UsersApi\EAR\2.1UsersApi.ear</fileLocationProperty>
     </enterpriseArchive>
 </Repository:repository>

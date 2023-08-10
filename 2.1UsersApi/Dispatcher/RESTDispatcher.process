@@ -84,17 +84,20 @@
                                                 </PostData>
                                             </xsl:template>
                                         </Input-Binding>
-                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                                                 <RESTResponse>
-                                                    <xsl:if test="$End/ResponseData">
+                                                    <xsl:if test="$End/Response/message">
                                                         <asciiContent>
-                                                            <xsl:value-of select="$End/ResponseData"/>
+                                                            <xsl:value-of select="$End/Response/message"/>
                                                         </asciiContent>
                                                     </xsl:if>
                                                     <Headers>
+                                                        <StatusLine>
+                                                            <xsl:value-of select="concat('HTTP/1.1 ', $End/Response/status)"/>
+                                                        </StatusLine>
                                                         <Content-Type>
-                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                            <xsl:value-of select="'application/json'"/>
                                                         </Content-Type>
                                                     </Headers>
                                                 </RESTResponse>
