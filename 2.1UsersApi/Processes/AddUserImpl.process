@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pfx5="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/UserSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" schemaLocation="/SharedResources/Schemas/StandardError.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" schemaLocation="/SharedResources/Schemas/UsersSchema.xsd"/>
@@ -12,23 +12,23 @@
     <pd:startY>106</pd:startY>
     <pd:returnBindings>
         <xsl:choose>
-            <xsl:when test="string-length($RenderError/ns:ActivityOutputClass/jsonString) > 0">
+            <xsl:when test="$INS_USERS/resultSet/outputSet/RETURN_CODE = 1">
                 <Response>
                     <status>
-                        <xsl:value-of select="400"/>
+                        <xsl:value-of select="201"/>
                     </status>
                     <message>
-                        <xsl:value-of select="$RenderError/ns:ActivityOutputClass/jsonString"/>
+                        <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
                     </message>
                 </Response>
             </xsl:when>
             <xsl:otherwise>
                 <Response>
                     <status>
-                        <xsl:value-of select="200"/>
+                        <xsl:value-of select="400"/>
                     </status>
                     <message>
-                        <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+                        <xsl:value-of select="$RenderError/ns:ActivityOutputClass/jsonString"/>
                     </message>
                 </Response>
             </xsl:otherwise>
@@ -39,14 +39,14 @@
         <xsd:element name="Response">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="status" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="status" type="xsd:int" minOccurs="0"/>
                     <xsd:element name="message" type="xsd:string" minOccurs="0"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:endType>
     <pd:endX>624</pd:endX>
-    <pd:endY>108</pd:endY>
+    <pd:endY>107</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1687245710155</pd:targetNamespace>
@@ -69,57 +69,10 @@
             </ns:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="SaveUserData">
-        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
-        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
-        <pd:x>390</pd:x>
-        <pd:y>110</pd:y>
-        <config>
-            <timeout>10</timeout>
-            <commit>false</commit>
-            <emptyStrAsNil>false</emptyStrAsNil>
-            <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
-            <statement>INSERT INTO users (name, status, data) VALUES (?,?,?) </statement>
-            <Prepared_Param_DataType>
-                <parameter>
-                    <parameterName>name</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>status</parameterName>
-                    <dataType>VARCHAR</dataType>
-                </parameter>
-                <parameter>
-                    <parameterName>data</parameterName>
-                    <dataType>TIMESTAMP</dataType>
-                </parameter>
-            </Prepared_Param_DataType>
-        </config>
-        <pd:inputBindings>
-            <jdbcUpdateActivityInput>
-                <name>
-                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:name"/>
-                </name>
-                <status>
-                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:status"/>
-                </status>
-                <data>
-                    <xsl:choose>
-                        <xsl:when test="exists($Java-Code/javaCodeActivityOutput/dateTime)">
-                            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/dateTime"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </data>
-            </jdbcUpdateActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
     <pd:activity name="Render JSON">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>533</pd:x>
+        <pd:x>521</pd:x>
         <pd:y>107</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
@@ -130,7 +83,6 @@
                 <xsd:element name="Response">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="statusCode" type="xsd:int"/>
                             <xsd:element name="message" type="xsd:string"/>
                         </xsd:sequence>
                     </xsd:complexType>
@@ -140,11 +92,8 @@
         <pd:inputBindings>
             <ns:ActivityInputClass>
                 <Response>
-                    <statusCode>
-                        <xsl:value-of select="200"/>
-                    </statusCode>
                     <message>
-                        <xsl:value-of select="&quot;Data saved sucessfully&quot;"/>
+                        <xsl:value-of select="'User sucessfully saved'"/>
                     </message>
                 </Response>
             </ns:ActivityInputClass>
@@ -217,14 +166,20 @@ setdateTime(novaData);
             </byteCode>
         </config>
         <pd:inputBindings>
-            <javaCodeActivityInput/>
+            <javaCodeActivityInput>
+                <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/pfx4:User/pfx4:startDate">
+                    <dataString>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx4:User/pfx4:startDate"/>
+                    </dataString>
+                </xsl:if>
+            </javaCodeActivityInput>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>872</pd:x>
-        <pd:y>113</pd:y>
+        <pd:x>877</pd:x>
+        <pd:y>103</pd:y>
         <config>
             <role>Error</role>
         </config>
@@ -244,8 +199,8 @@ setdateTime(novaData);
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>881</pd:x>
-        <pd:y>228</pd:y>
+        <pd:x>879</pd:x>
+        <pd:y>229</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -255,8 +210,8 @@ setdateTime(novaData);
     <pd:activity name="RenderError">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>725</pd:x>
-        <pd:y>107</pd:y>
+        <pd:x>724</pd:x>
+        <pd:y>106</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -276,16 +231,106 @@ setdateTime(novaData);
                     <pfx3:error>
                         <xsl:value-of select="'Bad Request'"/>
                     </pfx3:error>
-                    <xsl:if test="$_error/ns1:ErrorReport/Msg">
-                        <pfx3:message>
-                            <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
-                        </pfx3:message>
-                    </xsl:if>
+                    <pfx3:message>
+                        <xsl:value-of select="'Erro ao inserir usuário'"/>
+                    </pfx3:message>
                     <pfx3:path>
                         <xsl:value-of select="'/users'"/>
                     </pfx3:path>
                 </pfx3:StandardError>
             </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="INS_USERS">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>384</pd:x>
+        <pd:y>106</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <catalog>regescweb_db</catalog>
+            <ProcedureName>INS_USERS</ProcedureName>
+            <useSchema>true</useSchema>
+            <oraObjects/>
+            <oraTables/>
+            <ConfigurationError>output schema is null</ConfigurationError>
+            <parameterTypes>
+                <parameter>
+                    <colName>nameUser</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR</typeName>
+                </parameter>
+                <parameter>
+                    <colName>statusUser</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR</typeName>
+                </parameter>
+                <parameter>
+                    <colName>startDate</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATETIME</typeName>
+                </parameter>
+                <parameter>
+                    <colName>RETURN_CODE</colName>
+                    <colType>4</colType>
+                    <dataType>4</dataType>
+                    <typeName>INT</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <nameUser>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-JSON/ns:ActivityOutputClass/pfx4:User/pfx4:name)">
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx4:User/pfx4:name"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </nameUser>
+                    <statusUser>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-JSON/ns:ActivityOutputClass/pfx4:User/pfx4:status)">
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx4:User/pfx4:status"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </statusUser>
+                    <startDate>
+                        <xsl:choose>
+                            <xsl:when test="exists($Java-Code/javaCodeActivityOutput/dateTime)">
+                                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/dateTime"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </startDate>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>386</pd:x>
+        <pd:y>246</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx5:ActivityInput/>
         </pd:inputBindings>
     </pd:activity>
     <pd:transition>
@@ -303,22 +348,8 @@ setdateTime(novaData);
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>SaveUserData</pd:from>
-        <pd:to>Render JSON</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
         <pd:from>Render JSON</pd:from>
         <pd:to>End</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
-    <pd:transition>
-        <pd:from>Java Code</pd:from>
-        <pd:to>SaveUserData</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -343,5 +374,27 @@ setdateTime(novaData);
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>INS_USERS</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>INS_USERS</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$INS_USERS/resultSet/outputSet/RETURN_CODE = 1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>INS_USERS</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-65536</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>
