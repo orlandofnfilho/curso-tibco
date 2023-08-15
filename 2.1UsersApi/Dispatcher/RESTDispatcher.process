@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <pd:name>Dispatcher/RESTDispatcher.process</pd:name>
     <pd:startName>HTTP Receiver</pd:startName>
     <pd:startX>0</pd:startX>
     <pd:startY>0</pd:startY>
-    <pd:returnBindings/>
+    <pd:returnBindings>
+        <Response>
+            <status>
+                <xsl:value-of select="$LogExceptionHandler/Response/status"/>
+            </status>
+            <message>
+                <xsl:value-of select="$LogExceptionHandler/Response/message"/>
+            </message>
+        </Response>
+    </pd:returnBindings>
     <pd:starter name="HTTP Receiver">
         <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
         <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
-        <pd:x>163</pd:x>
-        <pd:y>53</pd:y>
+        <pd:x>127</pd:x>
+        <pd:y>57</pd:y>
         <config>
             <outputMode>String</outputMode>
             <defaultEncoding>ISO8859_1</defaultEncoding>
@@ -43,16 +52,26 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>440</pd:endX>
-    <pd:endY>58</pd:endY>
+    <pd:endType>
+        <xsd:element name="Response">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="status" type="xsd:string"/>
+                    <xsd:element name="message" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>460</pd:endX>
+    <pd:endY>60</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1687245288930</pd:targetNamespace>
     <pd:activity name="REST Dispatch and Reply">
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
-        <pd:x>304</pd:x>
-        <pd:y>53</pd:y>
+        <pd:x>269</pd:x>
+        <pd:y>63</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
             <RestService>
@@ -328,6 +347,54 @@
                                     </ns0:response>
                                 </ns0:method>
                             </ns0:resource>
+                            <ns0:resource id="DeleteUserByPath" path="/users/{id}">
+                                <ns0:doc/>
+                                <ns0:param name="id" style="template" required="true"/>
+                                <ns0:method id="deleteById" name="DELETE">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/DeleteUserImpl.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <id>
+                                                    <xsl:value-of select="$Input-Binding/params/template/id"/>
+                                                </id>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/Response/message">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/Response/message"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <StatusLine>
+                                                            <xsl:value-of select="concat('HTTP/1.1 ', $End/Response/statusCode)"/>
+                                                        </StatusLine>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="'application/json'"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
+                            </ns0:resource>
                         </ns0:resources>
                     </ns0:application>
                 </InnerService>
@@ -341,6 +408,16 @@
             </ns0:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="LogExceptionHandler">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>274</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <processName>/Processes/LogExceptionHandler.process</processName>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
     <pd:transition>
         <pd:from>HTTP Receiver</pd:from>
         <pd:to>REST Dispatch and Reply</pd:to>
@@ -350,6 +427,20 @@
     </pd:transition>
     <pd:transition>
         <pd:from>REST Dispatch and Reply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>REST Dispatch and Reply</pd:from>
+        <pd:to>LogExceptionHandler</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LogExceptionHandler</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/UserSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" schemaLocation="/SharedResources/Schemas/StandardError.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" schemaLocation="/SharedResources/Schemas/UsersSchema.xsd"/>
     <pd:name>Processes/AddUserImpl.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startType>
@@ -58,7 +59,7 @@
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
             <ValidateOutputEnable>true</ValidateOutputEnable>
-            <ActivityOutputEditor ref="pfx:User"/>
+            <ActivityOutputEditor ref="pfx4:User"/>
         </config>
         <pd:inputBindings>
             <ns:ActivityInputClass>
@@ -153,7 +154,7 @@
         <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
         <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
         <pd:x>268</pd:x>
-        <pd:y>108</pd:y>
+        <pd:y>107</pd:y>
         <config>
             <fileName>AddUserImplJavaCode</fileName>
             <packageName>Processes.AddUserImpl</packageName>
@@ -216,11 +217,7 @@ setdateTime(novaData);
             </byteCode>
         </config>
         <pd:inputBindings>
-            <javaCodeActivityInput>
-                <dataString>
-                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx:User/pfx:data"/>
-                </dataString>
-            </javaCodeActivityInput>
+            <javaCodeActivityInput/>
         </pd:inputBindings>
     </pd:activity>
     <pd:activity name="Log">

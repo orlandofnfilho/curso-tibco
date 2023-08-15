@@ -152,8 +152,8 @@ WHERE id = ?</statement>
     <pd:activity name="Generate Error">
         <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
         <pd:resourceType>ae.activities.throw</pd:resourceType>
-        <pd:x>98</pd:x>
-        <pd:y>236</pd:y>
+        <pd:x>77</pd:x>
+        <pd:y>241</pd:y>
         <config>
             <faultName/>
         </config>
@@ -210,7 +210,7 @@ WHERE id = ?</statement>
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
         <pd:x>223</pd:x>
-        <pd:y>228</pd:y>
+        <pd:y>227</pd:y>
         <config>
             <role>User</role>
         </config>

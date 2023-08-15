@@ -7,7 +7,7 @@
         <xsd:element name="id" type="xsd:string"/>
     </pd:startType>
     <pd:startX>93</pd:startX>
-    <pd:startY>77</pd:startY>
+    <pd:startY>76</pd:startY>
     <pd:returnBindings>
         <xsl:choose>
             <xsl:when test="$DeletarUsuario/resultSet/outputSet/RETURN_CODE =1">
@@ -146,8 +146,8 @@
     <pd:activity name="RenderExceptionHandler">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>239</pd:x>
-        <pd:y>218</pd:y>
+        <pd:x>243</pd:x>
+        <pd:y>226</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -172,7 +172,7 @@
                         <xsl:value-of select="concat('User not found id: ', $Start/id)"/>
                     </pfx2:message>
                     <pfx2:path>
-                        <xsl:value-of select="concat('/users?id=', $Start/id)"/>
+                        <xsl:value-of select="concat('/users/', $Start/id)"/>
                     </pfx2:path>
                 </pfx2:StandardError>
             </ns:ActivityInputClass>
