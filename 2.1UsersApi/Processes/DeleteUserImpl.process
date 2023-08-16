@@ -17,7 +17,7 @@
     <pd:startY>75</pd:startY>
     <pd:returnBindings>
         <xsl:choose>
-            <xsl:when test="$DeletarUsuario/resultSet/outputSet/RETURN_CODE =1">
+            <xsl:when test="$DELETE_USERS/resultSet/outputSet/RETURN_CODE = 1">
                 <Response>
                     <statusCode>
                         <xsl:value-of select="200"/>
@@ -27,13 +27,23 @@
                     </message>
                 </Response>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="$DELETE_USERS/resultSet/outputSet/RETURN_CODE = 0">
                 <Response>
                     <statusCode>
                         <xsl:value-of select="404"/>
                     </statusCode>
                     <message>
                         <xsl:value-of select="$RenderNotFoundException/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:when>
+            <xsl:otherwise>
+                <Response>
+                    <statusCode>
+                        <xsl:value-of select="400"/>
+                    </statusCode>
+                    <message>
+                        <xsl:value-of select="$RenderGeneralError/ns:ActivityOutputClass/jsonString"/>
                     </message>
                 </Response>
             </xsl:otherwise>
@@ -44,13 +54,13 @@
         <xsd:element name="Response">
             <xsd:complexType>
                 <xsd:sequence>
-                    <xsd:element name="statusCode" type="xsd:int"/>
-                    <xsd:element name="message" type="xsd:string"/>
+                    <xsd:element name="statusCode" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="message" type="xsd:string" minOccurs="0"/>
                 </xsd:sequence>
             </xsd:complexType>
         </xsd:element>
     </pd:endType>
-    <pd:endX>523</pd:endX>
+    <pd:endX>524</pd:endX>
     <pd:endY>75</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
@@ -80,8 +90,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>523</pd:x>
-        <pd:y>195</pd:y>
+        <pd:x>525</pd:x>
+        <pd:y>274</pd:y>
         <config>
             <role>Error</role>
         </config>
@@ -101,8 +111,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>643</pd:x>
-        <pd:y>192</pd:y>
+        <pd:x>682</pd:x>
+        <pd:y>268</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -194,6 +204,42 @@
             </inputs>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="RenderGeneralError">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>524</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx2:StandardError"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx2:StandardError>
+                    <pfx2:timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx2:timestamp>
+                    <pfx2:status>
+                        <xsl:value-of select="400"/>
+                    </pfx2:status>
+                    <pfx2:error>
+                        <xsl:value-of select="'Bad Request'"/>
+                    </pfx2:error>
+                    <pfx2:message>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                    </pfx2:message>
+                    <xsl:if test="$Start/Request/URI">
+                        <pfx2:path>
+                            <xsl:value-of select="$Start/Request/URI"/>
+                        </pfx2:path>
+                    </xsl:if>
+                </pfx2:StandardError>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Render JSON</pd:from>
         <pd:to>End</pd:to>
@@ -203,7 +249,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Log</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>RenderGeneralError</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -243,5 +289,12 @@
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RenderGeneralError</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

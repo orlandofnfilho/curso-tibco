@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pfx5="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/UserSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" schemaLocation="/SharedResources/Schemas/UsersSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" schemaLocation="/SharedResources/Schemas/StandardError.xsd"/>
+    <pd:name>Processes/GetUserByIdImpl.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="Request">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userId" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="URI" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>89</pd:startX>
+    <pd:startY>82</pd:startY>
+    <pd:returnBindings>
+        <xsl:choose>
+            <xsl:when test="string-length($RenderUsuario/ns:ActivityOutputClass/jsonString) > 0">
+                <Response>
+                    <status>
+                        <xsl:value-of select="200"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$RenderUsuario/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:when>
+            <xsl:when test="string-length($RenderNotFoundException/ns:ActivityOutputClass/jsonString) > 0">
+                <Response>
+                    <status>
+                        <xsl:value-of select="404"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$RenderNotFoundException/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:when>
+            <xsl:otherwise>
+                <Response>
+                    <status>
+                        <xsl:value-of select="400"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$Render-JSON-1/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:otherwise>
+        </xsl:choose>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="Response">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="status" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>495</pd:endX>
+    <pd:endY>87</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1687246481646</pd:targetNamespace>
+    <pd:activity name="RenderUsuario">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>370</pd:x>
+        <pd:y>83</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx4:User"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:for-each select="$SEL_USER_BY_ID/resultSet/Resultsets/ResultSet1[1]/Record1[1]">
+                    <pfx4:User>
+                        <pfx4:id>
+                            <xsl:value-of select="id"/>
+                        </pfx4:id>
+                        <pfx4:name>
+                            <xsl:value-of select="name"/>
+                        </pfx4:name>
+                        <pfx4:status>
+                            <xsl:value-of select="status"/>
+                        </pfx4:status>
+                        <xsl:if test="not((data/@xsi:nil=(&quot;true&quot;)) or (data/@xsi:nil=(&quot;1&quot;)))">
+                            <pfx4:startDate>
+                                <xsl:value-of select="data"/>
+                            </pfx4:startDate>
+                        </xsl:if>
+                    </pfx4:User>
+                </xsl:for-each>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>797</pd:x>
+        <pd:y>221</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>635</pd:x>
+        <pd:y>217</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <pfx3:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <xsl:if test="$_error/ns1:ErrorReport/MsgCode">
+                    <msgCode>
+                        <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                    </msgCode>
+                </xsl:if>
+            </pfx3:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render-JSON-1">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>632</pd:x>
+        <pd:y>84</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="Error">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="msg" type="xsd:string"/>
+                            <xsd:element name="status" type="xsd:string"/>
+                            <xsd:element name="timestamp" type="xsd:time"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <Error>
+                    <msg>
+                        <xsl:value-of select="'Erro Interno'"/>
+                    </msg>
+                    <status>
+                        <xsl:value-of select="'500'"/>
+                    </status>
+                    <timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </timestamp>
+                </Error>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="RenderNotFoundException">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>210</pd:x>
+        <pd:y>260</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx5:StandardError"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx5:StandardError>
+                    <pfx5:timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx5:timestamp>
+                    <pfx5:status>
+                        <xsl:value-of select="404"/>
+                    </pfx5:status>
+                    <pfx5:error>
+                        <xsl:value-of select="'Resource not found'"/>
+                    </pfx5:error>
+                    <pfx5:message>
+                        <xsl:value-of select="concat('User not found: ', $Start/Request/userId)"/>
+                    </pfx5:message>
+                    <xsl:if test="$Start/Request/URI">
+                        <pfx5:path>
+                            <xsl:value-of select="$Start/Request/URI"/>
+                        </pfx5:path>
+                    </xsl:if>
+                </pfx5:StandardError>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SEL_USER_BY_ID">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>200</pd:x>
+        <pd:y>84</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/SharedResources/Connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <catalog>regescweb_db</catalog>
+            <ProcedureName>SEL_USER_BY_ID</ProcedureName>
+            <useSchema>true</useSchema>
+            <oraObjects/>
+            <oraTables/>
+            <ResultSets>
+                <ResultSet>
+                    <QueryOutputCachedSchemaColumns>id</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>name</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>status</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+                    <QueryOutputCachedSchemaColumns>data</QueryOutputCachedSchemaColumns>
+                    <QueryOutputCachedSchemaDataTypes>93</QueryOutputCachedSchemaDataTypes>
+                    <QueryOutputCachedSchemaStatus>NillableElement</QueryOutputCachedSchemaStatus>
+                </ResultSet>
+            </ResultSets>
+            <parameterTypes>
+                <parameter>
+                    <colName>userId</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>INT</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <userId>
+                        <xsl:choose>
+                            <xsl:when test="exists($Start/Request/userId)">
+                                <xsl:value-of select="$Start/Request/userId"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </userId>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>RenderUsuario</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Log</pd:from>
+        <pd:to>Render-JSON-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render-JSON-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RenderNotFoundException</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SEL_USER_BY_ID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SEL_USER_BY_ID</pd:from>
+        <pd:to>RenderUsuario</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$SEL_USER_BY_ID/resultSet/Resultsets/ResultSet1/Record1 &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SEL_USER_BY_ID</pd:from>
+        <pd:to>RenderNotFoundException</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
