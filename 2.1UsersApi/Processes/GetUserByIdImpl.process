@@ -313,7 +313,7 @@
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>$SEL_USER_BY_ID/resultSet/Resultsets/ResultSet1/Record1 &gt; 0</pd:xpath>
+        <pd:xpath>count($SEL_USER_BY_ID/resultSet/Resultsets/ResultSet1/Record1) &gt; 0</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>SEL_USER_BY_ID</pd:from>

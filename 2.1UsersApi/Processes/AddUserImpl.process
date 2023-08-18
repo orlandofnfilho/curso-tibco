@@ -8,14 +8,14 @@
     <pd:startType>
         <xsd:element name="PostData" type="xsd:string"/>
     </pd:startType>
-    <pd:startX>45</pd:startX>
+    <pd:startX>46</pd:startX>
     <pd:startY>106</pd:startY>
     <pd:returnBindings>
         <xsl:choose>
             <xsl:when test="$INS_USERS/resultSet/outputSet/RETURN_CODE = 1">
                 <Response>
                     <status>
-                        <xsl:value-of select="201"/>
+                        <xsl:value-of select="200"/>
                     </status>
                     <message>
                         <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
@@ -79,6 +79,7 @@
             <BadgerfishCheck>false</BadgerfishCheck>
             <NullforEmptyvalues>true</NullforEmptyvalues>
             <ValidateIntputEnable>true</ValidateIntputEnable>
+            <removeRootElementForInput>true</removeRootElementForInput>
             <ActivityInputEditor>
                 <xsd:element name="Response">
                     <xsd:complexType>

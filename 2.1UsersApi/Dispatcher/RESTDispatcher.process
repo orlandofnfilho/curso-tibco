@@ -21,17 +21,11 @@
         <pd:y>57</pd:y>
         <config>
             <outputMode>String</outputMode>
-            <defaultEncoding>ISO8859_1</defaultEncoding>
+            <defaultEncoding>UTF8</defaultEncoding>
             <inputOutputVersion>5.3.0</inputOutputVersion>
             <newMimeSupport>true</newMimeSupport>
             <sharedChannel>/SharedResources/Connections/HTTP Connection.sharedhttp</sharedChannel>
-            <customField>
-                <row>
-                    <attribute>id</attribute>
-                    <attributeType>string</attributeType>
-                    <attributeCard>optional</attributeCard>
-                </row>
-            </customField>
+            <customField/>
             <Headers>
                 <xsd:element name="root">
                     <xsd:complexType>
@@ -71,16 +65,15 @@
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
         <pd:x>269</pd:x>
-        <pd:y>62</pd:y>
+        <pd:y>61</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
             <RestService>
                 <InnerService>
                     <ns0:application xmlns:ns0="http://wadl.dev.java.net/2009/02" name="UserApplication">
                         <ns0:resources name="UserService" base="http://localhost:3333">
-                            <ns0:resource id="DeleteUserByPath" path="/users/{id}">
+                            <ns0:resource id="/users/{id}" path="/users/{id}">
                                 <ns0:doc/>
-                                <ns0:param name="id" style="template" required="true"/>
                                 <ns0:method id="deleteById" name="DELETE">
                                     <ns0:doc/>
                                     <Binding process="/Processes/DeleteUserImpl.process">
@@ -98,10 +91,19 @@
                                             </xsd:element>
                                         </RESTResponseHeader>
                                         <Input-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
-                                                <id>
-                                                    <xsl:value-of select="$Input-Binding/params/template/id"/>
-                                                </id>
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <Request>
+                                                    <xsl:if test="$Input-Binding/params/template/id">
+                                                        <userId>
+                                                            <xsl:value-of select="$Input-Binding/params/template/id"/>
+                                                        </userId>
+                                                    </xsl:if>
+                                                    <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/RequestURI">
+                                                        <URI>
+                                                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/RequestURI"/>
+                                                        </URI>
+                                                    </xsl:if>
+                                                </Request>
                                             </xsl:template>
                                         </Input-Binding>
                                         <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
@@ -125,10 +127,113 @@
                                         </Output-Binding>
                                     </Binding>
                                 </ns0:method>
+                                <ns0:method id="getUserById" name="GET">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/GetUserByIdImpl.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <Request>
+                                                    <xsl:if test="$Input-Binding/params/template/id">
+                                                        <userId>
+                                                            <xsl:value-of select="$Input-Binding/params/template/id"/>
+                                                        </userId>
+                                                    </xsl:if>
+                                                    <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/RequestURI">
+                                                        <URI>
+                                                            <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/RequestURI"/>
+                                                        </URI>
+                                                    </xsl:if>
+                                                </Request>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pfx5="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+                                            <xsl:template xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pfx2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pfx5="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/Response/message">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/Response/message"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <StatusLine>
+                                                            <xsl:value-of select="concat('HTTP/1.1 ', $End/Response/status)"/>
+                                                        </StatusLine>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="'application/json'"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
+                                <ns0:param name="id" style="template" required="false"/>
+                                <ns0:method id="updateUser" name="PUT">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/UpdateUserImpl.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <PostData>
+                                                    <id>
+                                                        <xsl:value-of select="$Input-Binding/params/template/id"/>
+                                                    </id>
+                                                    <UpdateUser>
+                                                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/PostData"/>
+                                                    </UpdateUser>
+                                                </PostData>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UpdateUser.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:pfx5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UpdateUser.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:pfx5="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/Response/message">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/Response/message"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <StatusLine>
+                                                            <xsl:value-of select="concat('HTTP/1.1 ', $End/Response/status)"/>
+                                                        </StatusLine>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="'application/json'"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
                             </ns0:resource>
-                            <ns0:resource id="AddUser" path="/users">
+                            <ns0:resource id="/users" path="/users">
                                 <ns0:doc/>
-                                <ns0:method id="Method1" name="POST">
+                                <ns0:method id="addUser" name="POST">
                                     <ns0:doc/>
                                     <Binding process="/Processes/AddUserImpl.process">
                                         <RESTResponseHeader>
@@ -160,21 +265,57 @@
                                                         </asciiContent>
                                                     </xsl:if>
                                                     <Headers>
-                                                        <xsl:choose>
-                                                            <xsl:when test="string-length($End/Response/message) > 0">
-                                                                <StatusLine>
-                                                                    <xsl:value-of select="concat('HTTP/1.1 ', $End/Response/status)"/>
-                                                                </StatusLine>
-                                                            </xsl:when>
-                                                            <xsl:otherwise>
-                                                                <StatusLine>
-                                                                    <xsl:value-of select="'HTTP/1.1 500'"/>
-                                                                </StatusLine>
-                                                            </xsl:otherwise>
-                                                        </xsl:choose>
+                                                        <xsl:if test="$End/Response/status">
+                                                            <StatusLine>
+                                                                <xsl:value-of select="concat('HTTP/1.1 ',$End/Response/status)"/>
+                                                            </StatusLine>
+                                                        </xsl:if>
                                                         <Content-Type>
                                                             <xsl:value-of select="'application/json'"/>
                                                         </Content-Type>
+                                                        <Location>
+                                                            <xsl:value-of select="'/users/1'"/>
+                                                        </Location>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
+                                <ns0:method id="getAllUsers" name="GET">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/GetAllUsersImpl.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/Response/message">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/Response/message"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <StatusLine>
+                                                            <xsl:value-of select="concat('HTTP/1.1 ',$End/Response/status)"/>
+                                                        </StatusLine>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="'application/json'"/>
+                                                        </Content-Type>
+                                                        <Location>
+                                                            <xsl:value-of select="'application/json'"/>
+                                                        </Location>
                                                     </Headers>
                                                 </RESTResponse>
                                             </xsl:template>

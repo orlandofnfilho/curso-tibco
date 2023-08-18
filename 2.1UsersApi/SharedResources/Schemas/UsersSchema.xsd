@@ -9,6 +9,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="UsersSchema:User" maxOccurs="unbounded"/>
+				<xs:element ref="UsersSchema:Resposta"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -19,6 +20,14 @@
 				<xs:element name="name" type="xs:string" minOccurs="0"/>
 				<xs:element name="status" type="xs:string" minOccurs="0"/>
 				<xs:element name="startDate" type="xs:string" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Resposta">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="status" type="xs:string" minOccurs="0"/>
+				<xs:element name="message" type="xs:string" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

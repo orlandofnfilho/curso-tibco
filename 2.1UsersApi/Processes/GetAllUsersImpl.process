@@ -1,23 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:pfx4="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/Schema.xsd" schemaLocation="/SharedResources/Schemas/UserSchema.xsd"/>
-    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" schemaLocation="/SharedResources/Schemas/UsersSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/StandardError.xsd2" schemaLocation="/SharedResources/Schemas/StandardError.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/2.1UsersApi/SharedResources/Schemas/UsersSchema.xsd" schemaLocation="/SharedResources/Schemas/UsersSchema.xsd"/>
     <pd:name>Processes/GetAllUsersImpl.process</pd:name>
     <pd:startName>Start</pd:startName>
     <pd:startX>110</pd:startX>
     <pd:startY>76</pd:startY>
     <pd:returnBindings>
-        <Response>
-            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
-        </Response>
+        <xsl:choose>
+            <xsl:when test="string-length($RenderGeneralError/ns:ActivityOutputClass/jsonString) > 0">
+                <Response>
+                    <status>
+                        <xsl:value-of select="400"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$RenderGeneralError/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:when>
+            <xsl:otherwise>
+                <Response>
+                    <status>
+                        <xsl:value-of select="200"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:otherwise>
+        </xsl:choose>
     </pd:returnBindings>
     <pd:endName>End</pd:endName>
     <pd:endType>
-        <xsd:element name="Response" type="xsd:string"/>
+        <xsd:element name="Response">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="status" type="xsd:int" minOccurs="0"/>
+                    <xsd:element name="message" type="xsd:string" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
     </pd:endType>
     <pd:endX>429</pd:endX>
-    <pd:endY>184</pd:endY>
+    <pd:endY>182</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1687398151933</pd:targetNamespace>
@@ -59,8 +85,8 @@
     <pd:activity name="Render JSON">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>295</pd:x>
-        <pd:y>70</pd:y>
+        <pd:x>296</pd:x>
+        <pd:y>69</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -86,11 +112,6 @@
                                 <pfx:status>
                                     <xsl:value-of select="status"/>
                                 </pfx:status>
-                            </xsl:if>
-                            <xsl:if test="data">
-                                <pfx:data>
-                                    <xsl:value-of select="data"/>
-                                </pfx:data>
                             </xsl:if>
                         </pfx:User>
                     </xsl:for-each>
