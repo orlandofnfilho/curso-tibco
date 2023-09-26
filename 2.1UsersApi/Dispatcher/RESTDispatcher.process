@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/pe/EngineTypes">
     <pd:name>Dispatcher/RESTDispatcher.process</pd:name>
     <pd:startName>HTTP Receiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -17,8 +17,8 @@
     <pd:starter name="HTTP Receiver">
         <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
         <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
-        <pd:x>127</pd:x>
-        <pd:y>57</pd:y>
+        <pd:x>124</pd:x>
+        <pd:y>51</pd:y>
         <config>
             <outputMode>String</outputMode>
             <defaultEncoding>UTF8</defaultEncoding>
@@ -46,26 +46,46 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endType>
-        <xsd:element name="Response">
-            <xsd:complexType>
-                <xsd:sequence>
-                    <xsd:element name="status" type="xsd:string"/>
-                    <xsd:element name="message" type="xsd:string"/>
-                </xsd:sequence>
-            </xsd:complexType>
-        </xsd:element>
-    </pd:endType>
-    <pd:endX>460</pd:endX>
-    <pd:endY>60</pd:endY>
+    <pd:endX>453</pd:endX>
+    <pd:endY>51</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1687245288930</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>343</pd:x>
+        <pd:y>167</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Log">
+        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
+        <pd:resourceType>ae.activities.log</pd:resourceType>
+        <pd:x>453</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <role>User</role>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/Msg"/>
+                </message>
+                <msgCode>
+                    <xsl:value-of select="$_error/ns1:ErrorReport/MsgCode"/>
+                </msgCode>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:activity name="REST Dispatch and Reply">
         <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
         <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
-        <pd:x>269</pd:x>
-        <pd:y>61</pd:y>
+        <pd:x>278</pd:x>
+        <pd:y>59</pd:y>
         <config>
             <eventSource>HTTP Receiver</eventSource>
             <RestService>
@@ -336,16 +356,6 @@
             </ns0:ActivityInputClass>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="LogExceptionHandler">
-        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
-        <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>274</pd:x>
-        <pd:y>217</pd:y>
-        <config>
-            <processName>/Processes/LogExceptionHandler.process</processName>
-        </config>
-        <pd:inputBindings/>
-    </pd:activity>
     <pd:transition>
         <pd:from>HTTP Receiver</pd:from>
         <pd:to>REST Dispatch and Reply</pd:to>
@@ -361,14 +371,14 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>REST Dispatch and Reply</pd:from>
-        <pd:to>LogExceptionHandler</pd:to>
+        <pd:from>Catch</pd:from>
+        <pd:to>Log</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>error</pd:conditionType>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>LogExceptionHandler</pd:from>
+        <pd:from>Log</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

@@ -104,7 +104,7 @@
         <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
         <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
         <pd:x>268</pd:x>
-        <pd:y>107</pd:y>
+        <pd:y>106</pd:y>
         <config>
             <fileName>AddUserImplJavaCode</fileName>
             <packageName>Processes.AddUserImpl</packageName>
