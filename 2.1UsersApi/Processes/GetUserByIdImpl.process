@@ -15,11 +15,11 @@
             </xsd:complexType>
         </xsd:element>
     </pd:startType>
-    <pd:startX>89</pd:startX>
-    <pd:startY>82</pd:startY>
+    <pd:startX>30</pd:startX>
+    <pd:startY>89</pd:startY>
     <pd:returnBindings>
         <xsl:choose>
-            <xsl:when test="string-length($RenderUsuario/ns:ActivityOutputClass/jsonString) > 0">
+            <xsl:when test="$RenderUsuario/ns:ActivityOutputClass/jsonString !=''">
                 <Response>
                     <status>
                         <xsl:value-of select="200"/>
@@ -29,7 +29,7 @@
                     </message>
                 </Response>
             </xsl:when>
-            <xsl:when test="string-length($RenderNotFoundException/ns:ActivityOutputClass/jsonString) > 0">
+            <xsl:when test="$RenderNotFoundException/ns:ActivityOutputClass/jsonString !=''">
                 <Response>
                     <status>
                         <xsl:value-of select="404"/>
@@ -39,10 +39,20 @@
                     </message>
                 </Response>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="$RenderBadRequestError/ns:ActivityOutputClass/jsonString !=''">
                 <Response>
                     <status>
                         <xsl:value-of select="400"/>
+                    </status>
+                    <message>
+                        <xsl:value-of select="$RenderBadRequestError/ns:ActivityOutputClass/jsonString"/>
+                    </message>
+                </Response>
+            </xsl:when>
+            <xsl:otherwise>
+                <Response>
+                    <status>
+                        <xsl:value-of select="500"/>
                     </status>
                     <message>
                         <xsl:value-of select="$Render-JSON-1/ns:ActivityOutputClass/jsonString"/>
@@ -62,16 +72,16 @@
             </xsd:complexType>
         </xsd:element>
     </pd:endType>
-    <pd:endX>495</pd:endX>
-    <pd:endY>87</pd:endY>
+    <pd:endX>584</pd:endX>
+    <pd:endY>91</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1687246481646</pd:targetNamespace>
     <pd:activity name="RenderUsuario">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>370</pd:x>
-        <pd:y>83</pd:y>
+        <pd:x>459</pd:x>
+        <pd:y>88</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -105,8 +115,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>797</pd:x>
-        <pd:y>221</pd:y>
+        <pd:x>814</pd:x>
+        <pd:y>199</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -116,8 +126,8 @@
     <pd:activity name="Log">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>635</pd:x>
-        <pd:y>217</pd:y>
+        <pd:x>720</pd:x>
+        <pd:y>205</pd:y>
         <config>
             <role>User</role>
         </config>
@@ -137,8 +147,8 @@
     <pd:activity name="Render-JSON-1">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>632</pd:x>
-        <pd:y>84</pd:y>
+        <pd:x>721</pd:x>
+        <pd:y>88</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -175,8 +185,8 @@
     <pd:activity name="RenderNotFoundException">
         <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
         <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
-        <pd:x>210</pd:x>
-        <pd:y>260</pd:y>
+        <pd:x>289</pd:x>
+        <pd:y>209</pd:y>
         <config>
             <SchemaType>xsdType</SchemaType>
             <BadgerfishCheck>false</BadgerfishCheck>
@@ -211,8 +221,8 @@
     <pd:activity name="SEL_USER_BY_ID">
         <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
         <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
-        <pd:x>200</pd:x>
-        <pd:y>84</pd:y>
+        <pd:x>283</pd:x>
+        <pd:y>89</pd:y>
         <config>
             <timeout>10</timeout>
             <maxRows>100</maxRows>
@@ -265,6 +275,123 @@
             </inputs>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>139</pd:x>
+        <pd:y>90</pd:y>
+        <config>
+            <fileName>GetUserByIdImplJavaCode</fileName>
+            <packageName>Processes.GetUserByIdImpl</packageName>
+            <fullsource>package Processes.GetUserByIdImpl;
+import java.util.*;
+import java.io.*;
+public class GetUserByIdImplJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String idNumber = "";
+	protected int isValid = 0;
+	public String getidNumber() {
+		return idNumber;
+	}
+	public void setidNumber(String val) {
+		idNumber = val;
+	}
+	public int getisValid() {
+		return isValid;
+	}
+	public void setisValid(int val) {
+		isValid = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public GetUserByIdImplJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String idNumber
+	Out : int isValid
+* Available Variables: DO NOT MODIFY *****/
+String regex = "^[A-Za-z0-9]+$";
+if (!idNumber.isEmpty() &amp;&amp; idNumber.matches(regex)) {
+            setisValid(1);
+ }
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>idNumber</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>isValid</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>GetUserByIdImplJavaCode</name>
+                    <byteCode>yv66vgAAADQAMwkACQAiCQAJACMKAAoAJAgAJQgAJgoAJwAoCgAnACkKAAkAKgcAKwcALAEACGlkTnVtYmVyAQASTGphdmEvbGFuZy9TdHJpbmc7AQAHaXNWYWxpZAEAAUkBAAtnZXRpZE51bWJlcgEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAC3NldGlkTnVtYmVyAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAKZ2V0aXNWYWxpZAEAAygpSQEACnNldGlzVmFsaWQBAAQoSSlWAQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQANU3RhY2tNYXBUYWJsZQcALQEACkV4Y2VwdGlvbnMHAC4BAApTb3VyY2VGaWxlAQAcR2V0VXNlckJ5SWRJbXBsSmF2YUNvZGUuamF2YQwACwAMDAANAA4MABkAGgEAAAEADl5bQS1aYS16MC05XSskBwAtDAAvADAMADEAMgwAFwAYAQAxUHJvY2Vzc2VzL0dldFVzZXJCeUlkSW1wbC9HZXRVc2VyQnlJZEltcGxKYXZhQ29kZQEAEGphdmEvbGFuZy9PYmplY3QBABBqYXZhL2xhbmcvU3RyaW5nAQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAB2lzRW1wdHkBAAMoKVoBAAdtYXRjaGVzAQAVKExqYXZhL2xhbmcvU3RyaW5nOylaACEACQAKAAAAAgAEAAsADAAAAAQADQAOAAAABgABAA8AEAABABEAAAAdAAEAAQAAAAUqtAABsAAAAAEAEgAAAAYAAQAAAAkAAQATABQAAQARAAAAIgACAAIAAAAGKiu1AAGxAAAAAQASAAAACgACAAAADAAFAA0AAQAVABYAAQARAAAAHQABAAEAAAAFKrQAAqwAAAABABIAAAAGAAEAAAAPAAEAFwAYAAEAEQAAACIAAgACAAAABiobtQACsQAAAAEAEgAAAAoAAgAAABIABQATAAEAGQAaAAEAEQAAADQAAgABAAAAECq3AAMqEgS1AAEqA7UAArEAAAABABIAAAASAAQAAAAVAAQABgAKAAcADwAWAAEAGwAaAAIAEQAAAFAAAgACAAAAHhIFTCq0AAG2AAaaABMqtAABK7YAB5kACCoEtgAIsQAAAAIAEgAAABIABAAAABwAAwAdABgAHgAdACAAHAAAAAgAAfwAHQcAHQAeAAAABAABAB8AAQAgAAAAAgAh</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <xsl:if test="$Start/Request/userId">
+                    <idNumber>
+                        <xsl:value-of select="$Start/Request/userId"/>
+                    </idNumber>
+                </xsl:if>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="RenderBadRequestError">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>135</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <NullforEmptyvalues>true</NullforEmptyvalues>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx5:StandardError"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx5:StandardError>
+                    <pfx5:timestamp>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </pfx5:timestamp>
+                    <pfx5:status>
+                        <xsl:value-of select="400"/>
+                    </pfx5:status>
+                    <pfx5:error>
+                        <xsl:value-of select="'Bad Request'"/>
+                    </pfx5:error>
+                    <pfx5:message>
+                        <xsl:value-of select="'Número do id inválido'"/>
+                    </pfx5:message>
+                    <xsl:if test="$Start/Request/URI">
+                        <pfx5:path>
+                            <xsl:value-of select="$Start/Request/URI"/>
+                        </pfx5:path>
+                    </xsl:if>
+                </pfx5:StandardError>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Null">
+        <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+        <pd:resourceType>ae.activities.null</pd:resourceType>
+        <pd:x>293</pd:x>
+        <pd:y>308</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
     <pd:transition>
         <pd:from>RenderUsuario</pd:from>
         <pd:to>End</pd:to>
@@ -295,14 +422,14 @@
     </pd:transition>
     <pd:transition>
         <pd:from>RenderNotFoundException</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Null</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
         <pd:from>Start</pd:from>
-        <pd:to>SEL_USER_BY_ID</pd:to>
+        <pd:to>Java Code</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -321,5 +448,34 @@
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>SEL_USER_BY_ID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>RenderBadRequestError</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Java-Code/javaCodeActivityOutput/isValid = 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>RenderBadRequestError</pd:from>
+        <pd:to>Null</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Null</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>One Bend</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

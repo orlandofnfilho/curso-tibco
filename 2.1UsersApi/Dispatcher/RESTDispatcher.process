@@ -18,7 +18,7 @@
         <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
         <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
         <pd:x>124</pd:x>
-        <pd:y>51</pd:y>
+        <pd:y>50</pd:y>
         <config>
             <outputMode>String</outputMode>
             <defaultEncoding>UTF8</defaultEncoding>
