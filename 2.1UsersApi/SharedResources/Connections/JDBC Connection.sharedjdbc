@@ -5,7 +5,7 @@
     <config>
         <driver>com.mysql.jdbc.Driver</driver>
         <maxConnections>10</maxConnections>
-        <loginTimeout>60</loginTimeout>
+        <loginTimeout>1</loginTimeout>
         <connectionType>JDBC</connectionType>
         <UseSharedJndiConfig>false</UseSharedJndiConfig>
         <location>jdbc:mysql://%%DATABASE/DB_HOST%%:%%DATABASE/DB_PORT%%/%%DATABASE/DB_NAME%%</location>
