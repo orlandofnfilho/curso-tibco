@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
     <pd:name>Processes/Process Definition.process</pd:name>
+    <pd:description>2023 Nov 12 09:00:00
+ 
+"yyyy-MM-dd'T'HH:mm:ssXXX"
+
+2021-11-01T00:00:00.000</pd:description>
     <pd:startName>Start</pd:startName>
     <pd:startType>
         <xsd:element name="root" type="xsd:dateTime"/>
@@ -21,15 +26,15 @@
     <pd:activity name="TokenValido">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>320</pd:x>
-        <pd:y>62</pd:y>
+        <pd:x>325</pd:x>
+        <pd:y>63</pd:y>
         <config>
             <role>User</role>
         </config>
         <pd:inputBindings>
             <ns:ActivityInput>
                 <message>
-                    <xsl:value-of select="concat(tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, $createdAt/root), '              ', tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, current-dateTime()))"/>
+                    <xsl:value-of select="concat(tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, $createdAt/root), '              ', tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, tib:add-to-dateTime(current-dateTime(), 0, 0, 0, 0, 120, 0)))"/>
                 </message>
             </ns:ActivityInput>
         </pd:inputBindings>
@@ -37,15 +42,15 @@
     <pd:activity name="Gera novo token">
         <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
         <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>104</pd:x>
-        <pd:y>215</pd:y>
+        <pd:x>162</pd:x>
+        <pd:y>218</pd:y>
         <config>
             <role>User</role>
         </config>
         <pd:inputBindings>
             <ns:ActivityInput>
                 <message>
-                    <xsl:value-of select="concat(tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, $createdAt/root), '              ', tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, current-dateTime()))"/>
+                    <xsl:value-of select="concat(tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, $createdAt/root), '              ', tib:format-dateTime(&quot;yyyyMMddHHmmss&quot;, current-dateTime()), '    ' ,current-dateTime())"/>
                 </message>
             </ns:ActivityInput>
         </pd:inputBindings>
@@ -54,7 +59,7 @@
         <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
         <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
         <pd:x>158</pd:x>
-        <pd:y>60</pd:y>
+        <pd:y>61</pd:y>
         <config>
             <variableName>createdAt</variableName>
         </config>
@@ -67,8 +72,8 @@
     <pd:activity name="Catch">
         <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
         <pd:resourceType>ae.activities.catch</pd:resourceType>
-        <pd:x>568</pd:x>
-        <pd:y>207</pd:y>
+        <pd:x>492</pd:x>
+        <pd:y>219</pd:y>
         <pd:handler>true</pd:handler>
         <config>
             <catchAll>true</catchAll>
@@ -103,10 +108,17 @@
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
-        <pd:xpath>tib:format-dateTime("yyyyMMddHHmmss", $createdAt/root) &lt; tib:format-dateTime("yyyyMMddHHmmss", tib:add-to-dateTime(current-dateTime(), 0, 0, 0, 0, 10, 0))</pd:xpath>
+        <pd:xpath>tib:format-dateTime("yyyyMMddHHmmss", tib:add-to-dateTime($createdAt/root, 0, 0, 0, 1, 0, 0)) &gt;  tib:format-dateTime("yyyyMMddHHmmss", current-dateTime())</pd:xpath>
     </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Gera novo token</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
